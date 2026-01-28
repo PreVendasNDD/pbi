@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power BI Clone - Puro JavaScript</title>
+    
+    <!-- Biblioteca para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Biblioteca para Excel -->
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    
+    <!-- Biblioteca para arrastar -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.11/interact.min.js"></script>
+    
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f3f6f9;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* HEADER */
+        .header {
+            background: #0078d4;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo i {
+            font-size: 28px;
+        }
+
+        /* LAYOUT PRINCIPAL */
+        .container {
+            display: flex;
+            height: calc(100vh - 70px);
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 280px;
+            background: white;
+            border-right: 1px solid #ddd;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: #0078d4;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #0078d4;
+        }
+
+        .chart-types {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .chart-btn {
+            background: #f8f9fa;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 15px 5px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-size: 14px;
+        }
+
+        .chart-btn:hover {
+            background: #e6f2ff;
+            border-color: #0078d4;
+        }
+
+        .chart-btn.active {
+            background: #e6f2ff;
+            border-color: #0078d4;
+            color: #0078d4;
+        }
+
+        .chart-btn i {
+            font-size: 24px;
+        }
+
+        .config-panel {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .config-group {
+            margin-bottom: 15px;
+        }
+
+        .config-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .config-input, .config-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .add-btn {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 15px;
+            transition: background 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #106ebe;
+        }
+
+        /* ÁREA DE UPLOAD */
+        .upload-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+        }
+
+        .upload-box {
+            border: 3px dashed #0078d4;
+            border-radius: 15px;
+            padding: 60px 40px;
+            text-align: center;
+            background: #f0f8ff;
+            cursor: pointer;
+            transition: all 0.3s;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .upload-box:hover {
+            background: #e6f2ff;
+        }
+
+        .upload-box i {
+            font-size: 64px;
+            color: #0078d4;
+            margin-bottom: 20px;
+        }
+
+        .upload-box h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .upload-box p {
+            color: #666;
+            margin: 15px 0;
+        }
+
+        .upload-btn {
+            background: #0078d4;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* DASHBOARD */
+        .dashboard {
+            flex: 1;
+            padding: 20px;
+            overflow: auto;
+            background: #f8f9fa;
+            display: none;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        /* WIDGET */
+        .widget {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+            min-height: 300px;
+        }
+
+        .widget-header {
+            background: #f8f9fa;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: move;
+        }
+
+        .widget-title {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .widget-controls button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            margin-left: 10px;
+            font-size: 16px;
+        }
+
+        .widget-controls button:hover {
+            color: #ff4444;
+        }
+
+        .widget-content {
+            padding: 20px;
+            height: calc(100% - 60px);
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        /* DATA TABLE */
+        .data-table {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: auto;
+            max-height: 400px;
+        }
+
+        .data-table h3 {
+            margin-bottom: 15px;
+            color: #0078d4;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+
+        tr:hover {
+            background: #f5f5f5;
+        }
+
+        /* MENSAGENS */
+        .message {
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+        }
+
+        /* DRAGGABLE */
+        .draggable {
+            touch-action: none;
+            user-select: none;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo">
+            <i class="fas fa-chart-line"></i>
+            <span>Power BI Clone</span>
+        </div>
+        <div>
+            <button id="resetBtn" class="upload-btn">
+                <i class="fas fa-redo"></i> Novo Dashboard
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="container">
+        <!-- SIDEBAR (só aparece depois de carregar dados) -->
+        <div class="sidebar" id="sidebar" style="display: none;">
+            <h3><i class="fas fa-chart-bar"></i> Visualizações</h3>
+            
+            <div class="chart-types">
+                <button class="chart-btn" data-type="line">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Linha</span>
+                </button>
+                <button class="chart-btn" data-type="bar">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Barras</span>
+                </button>
+                <button class="chart-btn" data-type="pie">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Pizza</span>
+                </button>
+                <button class="chart-btn" data-type="doughnut">
+                    <i class="fas fa-chart-pie"></i>
+                    <span>Rosca</span>
+                </button>
+                <button class="chart-btn" data-type="radar">
+                    <i class="fas fa-bullseye"></i>
+                    <span>Radar</span>
+                </button>
+                <button class="chart-btn" data-type="table">
+                    <i class="fas fa-table"></i>
+                    <span>Tabela</span>
+                </button>
+            </div>
+
+            <div class="config-panel">
+                <h4>Configurar Gráfico</h4>
+                
+                <div class="config-group">
+                    <label>Título:</label>
+                    <input type="text" id="chartTitle" class="config-input" placeholder="Digite o título">
+                </div>
+
+                <div class="config-group">
+                    <label>Eixo X:</label>
+                    <select id="xAxis" class="config-select">
+                        <option value="">Selecione a coluna</option>
+                    </select>
+                </div>
+
+                <div class="config-group">
+                    <label>Eixo Y:</label>
+                    <select id="yAxis" class="config-select">
+                        <option value="">Selecione a coluna</option>
+                    </select>
+                </div>
+
+                <div class="config-group">
+                    <label>Cor do Gráfico:</label>
+                    <input type="color" id="chartColor" class="config-input" value="#0078d4">
+                </div>
+
+                <button id="addChartBtn" class="add-btn">
+                    <i class="fas fa-plus"></i> Adicionar ao Dashboard
+                </button>
+            </div>
+
+            <!-- VISUALIZAÇÃO DOS DADOS -->
+            <div class="data-table" id="dataPreview">
+                <h3><i class="fas fa-database"></i> Dados Carregados</h3>
+                <div id="tableContainer"></div>
+            </div>
+        </div>
+
+        <!-- CONTEÚDO PRINCIPAL -->
+        <div class="main-content">
+            <!-- TELA DE UPLOAD -->
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-box" id="dropZone">
+                    <i class="fas fa-file-excel"></i>
+                    <h2>Arraste e solte seu arquivo Excel aqui</h2>
+                    <p>ou</p>
+                    <button class="upload-btn" id="fileInputBtn">
+                        <i class="fas fa-upload"></i> Selecionar Arquivo
+                    </button>
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+                    <p style="margin-top: 20px; font-size: 14px;">
+                        Formatos suportados: .xlsx, .xls, .csv
+                    </p>
+                    
+                    <!-- DADOS DE EXEMPLO -->
+                    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd;">
+                        <p>Não tem um arquivo? Use nossos dados de exemplo:</p>
+                        <button class="upload-btn" id="sampleDataBtn" style="background: #28a745;">
+                            <i class="fas fa-magic"></i> Carregar Dados de Exemplo
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DASHBOARD -->
+            <div class="dashboard" id="dashboard">
+                <div class="dashboard-grid" id="dashboardGrid">
+                    <!-- Os widgets serão adicionados aqui dinamicamente -->
+                    <div class="message" id="emptyMessage">
+                        <i class="fas fa-plus-circle" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                        <p>Adicione seu primeiro gráfico usando a barra lateral!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // VARIÁVEIS GLOBAIS
+        let currentData = null;
+        let currentColumns = [];
+        let selectedChartType = 'bar';
+        let widgetCount = 0;
+        let widgets = [];
+
+        // INICIALIZAÇÃO
+        document.addEventListener('DOMContentLoaded', function() {
+            initEventListeners();
+            makeDraggable();
+        });
+
+        // CONFIGURA EVENT LISTENERS
+        function initEventListeners() {
+            // Upload de arquivo
+            document.getElementById('fileInputBtn').addEventListener('click', () => {
+                document.getElementById('fileInput').click();
+            });
+
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            
+            // Drag and drop
+            const dropZone = document.getElementById('dropZone');
+            dropZone.addEventListener('dragover', handleDragOver);
+            dropZone.addEventListener('drop', handleDrop);
+            
+            // Botão de dados de exemplo
+            document.getElementById('sampleDataBtn').addEventListener('click', loadSampleData);
+            
+            // Botão reset
+            document.getElementById('resetBtn').addEventListener('click', resetDashboard);
+            
+            // Seleção de tipo de gráfico
+            document.querySelectorAll('.chart-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedChartType = this.dataset.type;
+                    updateConfigPanel();
+                });
+            });
+            
+            // Adicionar gráfico
+            document.getElementById('addChartBtn').addEventListener('click', addChartToDashboard);
+            
+            // Inicializa com gráfico de barras selecionado
+            document.querySelector('.chart-btn[data-type="bar"]').classList.add('active');
+        }
+
+        // MANIPULAÇÃO DE ARQUIVOS
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.dataTransfer.dropEffect = 'copy';
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                processFile(files[0]);
+            }
+        }
+
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                processFile(file);
+            }
+        }
+
+        function processFile(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Pega a primeira planilha
+                    const firstSheet = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[firstSheet];
+                    
+                    // Converte para JSON
+                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                    
+                    // Processa os dados
+                    processData(jsonData, file.name);
+                    
+                } catch (error) {
+                    alert('Erro ao ler o arquivo: ' + error.message);
+                }
+            };
+            
+            if (file.name.endsWith('.csv')) {
+                reader.readAsText(file);
+            } else {
+                reader.readAsArrayBuffer(file);
+            }
+        }
+
+        // PROCESSAMENTO DE DADOS
+        function processData(data, fileName) {
+            if (data.length === 0) {
+                alert('Arquivo vazio ou sem dados válidos!');
+                return;
+            }
+            
+            currentData = data;
+            currentColumns = Object.keys(data[0]);
+            
+            // Atualiza a interface
+            updateUIAfterDataLoad(fileName);
+            
+            // Preenche os selects
+            populateColumnSelects();
+            
+            // Mostra preview dos dados
+            showDataPreview();
+        }
+
+        function loadSampleData() {
+            // Dados de exemplo
+            currentData = [
+                { Mês: 'Janeiro', Vendas: 12000, Lucro: 8000, Clientes: 150 },
+                { Mês: 'Fevereiro', Vendas: 19000, Lucro: 12000, Clientes: 180 },
+                { Mês: 'Março', Vendas: 15000, Lucro: 9000, Clientes: 160 },
+                { Mês: 'Abril', Vendas: 22000, Lucro: 15000, Clientes: 210 },
+                { Mês: 'Maio', Vendas: 18000, Lucro: 11000, Clientes: 190 },
+                { Mês: 'Junho', Vendas: 25000, Lucro: 17000, Clientes: 230 }
+            ];
+            
+            currentColumns = ['Mês', 'Vendas', 'Lucro', 'Clientes'];
+            
+            updateUIAfterDataLoad('Dados de Exemplo');
+            populateColumnSelects();
+            showDataPreview();
+        }
+
+        // ATUALIZAÇÃO DA INTERFACE
+        function updateUIAfterDataLoad(fileName) {
+            // Esconde área de upload
+            document.getElementById('uploadArea').style.display = 'none';
+            
+            // Mostra sidebar
+            document.getElementById('sidebar').style.display = 'block';
+            
+            // Mostra dashboard
+            document.getElementById('dashboard').classList.add('active');
+            
+            // Atualiza título
+            document.querySelector('.logo span').textContent = `Power BI Clone - ${fileName}`;
+        }
+
+        function populateColumnSelects() {
+            const xAxisSelect = document.getElementById('xAxis');
+            const yAxisSelect = document.getElementById('yAxis');
+            
+            // Limpa opções atuais
+            xAxisSelect.innerHTML = '<option value="">Selecione a coluna</option>';
+            yAxisSelect.innerHTML = '<option value="">Selecione a coluna</option>';
+            
+            // Adiciona colunas
+            currentColumns.forEach(col => {
+                xAxisSelect.innerHTML += `<option value="${col}">${col}</option>`;
+                yAxisSelect.innerHTML += `<option value="${col}">${col}</option>`;
+            });
+            
+            // Seleciona padrões
+            if (currentColumns.length >= 2) {
+                xAxisSelect.value = currentColumns[0];
+                yAxisSelect.value = currentColumns[1];
+            }
+        }
+
+        function updateConfigPanel() {
+            const xAxisGroup = document.getElementById('xAxis').closest('.config-group');
+            const yAxisGroup = document.getElementById('yAxis').closest('.config-group');
+            
+            if (selectedChartType === 'pie' || selectedChartType === 'doughnut') {
+                xAxisGroup.querySelector('label').textContent = 'Rótulos:';
+                yAxisGroup.querySelector('label').textContent = 'Valores:';
+            } else if (selectedChartType === 'table') {
+                xAxisGroup.style.display = 'none';
+                yAxisGroup.style.display = 'none';
+            } else {
+                xAxisGroup.style.display = 'block';
+                yAxisGroup.style.display = 'block';
+                xAxisGroup.querySelector('label').textContent = 'Eixo X:';
+                yAxisGroup.querySelector('label').textContent = 'Eixo Y:';
+            }
+        }
+
+        function showDataPreview() {
+            const container = document.getElementById('tableContainer');
+            
+            if (!currentData || currentData.length === 0) {
+                container.innerHTML = '<p>Nenhum dado para mostrar</p>';
+                return;
+            }
+            
+            let html = '<table>';
+            
+            // Cabeçalho
+            html += '<thead><tr>';
+            currentColumns.forEach(col => {
+                html += `<th>${col}</th>`;
+            });
+            html += '</tr></thead>';
+            
+            // Dados (limita a 10 linhas)
+            html += '<tbody>';
+            currentData.slice(0, 10).forEach(row => {
+                html += '<tr>';
+                currentColumns.forEach(col => {
+                    html += `<td>${row[col] || ''}</td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            
+            container.innerHTML = html;
+        }
+
+        // CRIAÇÃO DE GRÁFICOS
+        function addChartToDashboard() {
+            const title = document.getElementById('chartTitle').value || `Gráfico ${selectedChartType} ${widgetCount + 1}`;
+            const xAxis = document.getElementById('xAxis').value;
+            const yAxis = document.getElementById('yAxis').value;
+            const color = document.getElementById('chartColor').value;
+            
+            if ((selectedChartType !== 'table') && (!xAxis || !yAxis)) {
+                alert('Selecione os eixos X e Y!');
+                return;
+            }
+            
+            // Cria widget
+            const widgetId = `widget-${Date.now()}`;
+            const widget = createWidget(widgetId, title, selectedChartType, xAxis, yAxis, color);
+            
+            // Adiciona ao dashboard
+            const grid = document.getElementById('dashboardGrid');
+            const emptyMessage = document.getElementById('emptyMessage');
+            
+            if (emptyMessage) {
+                emptyMessage.remove();
+            }
+            
+            grid.appendChild(widget);
+            widgetCount++;
+            
+            // Renderiza o gráfico
+            renderChart(widgetId, selectedChartType, xAxis, yAxis, color);
+            
+            // Configura drag and drop
+            makeWidgetDraggable(widgetId);
+            
+            // Limpa formulário
+            document.getElementById('chartTitle').value = '';
+        }
+
+        function createWidget(id, title, type, xAxis, yAxis, color) {
+            const widget = document.createElement('div');
+            widget.className = 'widget draggable';
+            widget.id = id;
+            widget.dataset.type = type;
+            widget.dataset.xAxis = xAxis;
+            widget.dataset.yAxis = yAxis;
+            widget.dataset.color = color;
+            
+            widget.innerHTML = `
+                <div class="widget-header">
+                    <div class="widget-title">${title}</div>
+                    <div class="widget-controls">
+                        <button class="refresh-btn" title="Atualizar">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="delete-btn" title="Remover">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="widget-content">
+                    <div class="chart-container">
+                        <canvas id="chart-${id}"></canvas>
+                    </div>
+                </div>
+            `;
+            
+            // Adiciona eventos aos botões
+            widget.querySelector('.delete-btn').addEventListener('click', function() {
+                widget.remove();
+                widgetCount--;
+                if (widgetCount === 0) {
+                    showEmptyMessage();
+                }
+            });
+            
+            widget.querySelector('.refresh-btn').addEventListener('click', function() {
+                renderChart(id, type, xAxis, yAxis, color);
+            });
+            
+            return widget;
+        }
+
+        function renderChart(widgetId, type, xAxis, yAxis, color) {
+            const canvas = document.getElementById(`chart-${widgetId}`);
+            if (!canvas) return;
+            
+            // Destroi gráfico anterior se existir
+            if (canvas.chart) {
+                canvas.chart.destroy();
+            }
+            
+            // Prepara dados
+            const labels = currentData.map(row => row[xAxis]);
+            const data = currentData.map(row => row[yAxis]);
+            
+            const ctx = canvas.getContext('2d');
+            
+            let chartConfig;
+            
+            if (type === 'table') {
+                // Cria uma tabela em vez de gráfico
+                const widgetContent = canvas.closest('.widget-content');
+                widgetContent.innerHTML = createTable(currentData.slice(0, 20));
+                return;
+            } else if (type === 'pie' || type === 'doughnut') {
+                chartConfig = {
+                    type: type,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            backgroundColor: generateColors(data.length, color),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'right'
+                            }
+                        }
+                    }
+                };
+            } else if (type === 'radar') {
+                chartConfig = {
+                    type: 'radar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: yAxis,
+                            data: data,
+                            backgroundColor: hexToRgba(color, 0.2),
+                            borderColor: color,
+                            borderWidth: 2,
+                            pointBackgroundColor: color
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false
+                    }
+                };
+            } else {
+                chartConfig = {
+                    type: type,
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: yAxis,
+                            data: data,
+                            backgroundColor: type === 'bar' ? hexToRgba(color, 0.7) : hexToRgba(color, 0.1),
+                            borderColor: color,
+                            borderWidth: 2,
+                            fill: type === 'line',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                };
+            }
+            
+            // Cria o gráfico
+            canvas.chart = new Chart(ctx, chartConfig);
+        }
+
+        // FUNÇÕES AUXILIARES
+        function createTable(data) {
+            if (!data || data.length === 0) return '<p>Sem dados</p>';
+            
+            let html = '<div style="overflow: auto; max-height: 250px;"><table style="width: 100%;">';
+            
+            // Cabeçalho
+            html += '<thead><tr>';
+            currentColumns.forEach(col => {
+                html += `<th style="padding: 8px; background: #f5f5f5;">${col}</th>`;
+            });
+            html += '</tr></thead>';
+            
+            // Dados
+            html += '<tbody>';
+            data.forEach(row => {
+                html += '<tr>';
+                currentColumns.forEach(col => {
+                    html += `<td style="padding: 8px; border-bottom: 1px solid #ddd;">${row[col] || ''}</td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table></div>';
+            
+            return html;
+        }
+
+        function generateColors(count, baseColor) {
+            const colors = [];
+            for (let i = 0; i < count; i++) {
+                const hue = (i * 137) % 360; // Fórmula para cores diversas
+                colors.push(`hsl(${hue}, 70%, 60%)`);
+            }
+            return colors;
+        }
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        // DRAG AND DROP
+        function makeDraggable() {
+            interact('.draggable').draggable({
+                listeners: {
+                    start(event) {
+                        event.target.style.zIndex = 1000;
+                    },
+                    move(event) {
+                        const target = event.target;
+                        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+                        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+                        
+                        target.style.transform = `translate(${x}px, ${y}px)`;
+                        target.setAttribute('data-x', x);
+                        target.setAttribute('data-y', y);
+                    },
+                    end(event) {
+                        event.target.style.zIndex = '';
+                    }
+                }
+            });
+        }
+
+        function makeWidgetDraggable(widgetId) {
+            const widget = document.getElementById(widgetId);
+            if (widget) {
+                interact(widget).draggable({
+                    listeners: {
+                        move: function(event) {
+                            const x = (parseFloat(widget.getAttribute('data-x')) || 0) + event.dx;
+                            const y = (parseFloat(widget.getAttribute('data-y')) || 0) + event.dy;
+                            
+                            widget.style.transform = `translate(${x}px, ${y}px)`;
+                            widget.setAttribute('data-x', x);
+                            widget.setAttribute('data-y', y);
+                        }
+                    }
+                });
+            }
+        }
+
+        // FUNÇÕES DE UTILIDADE
+        function showEmptyMessage() {
+            const grid = document.getElementById('dashboardGrid');
+            grid.innerHTML = `
+                <div class="message" id="emptyMessage">
+                    <i class="fas fa-plus-circle" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
+                    <p>Adicione seu primeiro gráfico usando a barra lateral!</p>
+                </div>
+            `;
+        }
+
+        function resetDashboard() {
+            if (confirm('Tem certeza que deseja criar um novo dashboard? Todos os gráficos serão perdidos.')) {
+                currentData = null;
+                currentColumns = [];
+                widgetCount = 0;
+                
+                // Esconde sidebar e dashboard
+                document.getElementById('sidebar').style.display = 'none';
+                document.getElementById('dashboard').classList.remove('active');
+                
+                // Mostra área de upload
+                document.getElementById('uploadArea').style.display = 'flex';
+                
+                // Limpa dashboard
+                document.getElementById('dashboardGrid').innerHTML = '';
+                showEmptyMessage();
+                
+                // Reseta título
+                document.querySelector('.logo span').textContent = 'Power BI Clone';
+                
+                // Limpa formulário
+                document.getElementById('chartTitle').value = '';
+                document.getElementById('xAxis').innerHTML = '<option value="">Selecione a coluna</option>';
+                document.getElementById('yAxis').innerHTML = '<option value="">Selecione a coluna</option>';
+            }
+        }
+
+        // Atualiza painel de configuração ao carregar
+        updateConfigPanel();
+    </script>
+</body>
+</html>
