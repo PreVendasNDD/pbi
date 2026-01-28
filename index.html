@@ -44,7 +44,7 @@
 
         /* Sidebar */
         .sidebar {
-            width: 260px;
+            width: 280px;
             background: linear-gradient(180deg, #1f2a37 0%, #111827 100%);
             color: white;
             padding: 24px 0;
@@ -82,7 +82,7 @@
         }
 
         .menu-section {
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .menu-title {
@@ -103,6 +103,7 @@
             text-decoration: none;
             transition: all 0.2s ease;
             border-left: 3px solid transparent;
+            cursor: pointer;
         }
 
         .menu-item:hover, .menu-item.active {
@@ -115,6 +116,31 @@
             width: 20px;
             text-align: center;
             font-size: 18px;
+        }
+
+        .sub-menu {
+            display: none;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-left: 3px solid var(--primary);
+            margin-left: 24px;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .sub-menu.active {
+            display: block;
+        }
+
+        .sub-item {
+            padding: 10px 24px 10px 36px;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sub-item:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.05);
         }
 
         .user-info {
@@ -208,17 +234,6 @@
             box-shadow: var(--shadow);
         }
 
-        .btn-success {
-            background-color: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
         .file-upload-container {
             position: relative;
             overflow: hidden;
@@ -235,94 +250,62 @@
             cursor: pointer;
         }
 
-        /* Dashboard Grid */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .card {
+        /* Tabs Navigation */
+        .tabs-container {
             background-color: white;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 24px;
-            transition: all 0.3s ease;
+            margin-bottom: 32px;
+            overflow: hidden;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card-header {
+        .tabs-header {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray-light);
+            background-color: #f9fafb;
+            overflow-x: auto;
         }
 
-        .card-title {
-            font-size: 18px;
+        .tab-btn {
+            padding: 16px 24px;
+            background: none;
+            border: none;
             font-weight: 600;
-            color: var(--dark);
-        }
-
-        .card-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-        }
-
-        .icon-primary {
-            background-color: rgba(26, 86, 219, 0.1);
-            color: var(--primary);
-        }
-
-        .icon-success {
-            background-color: rgba(14, 159, 110, 0.1);
-            color: var(--success);
-        }
-
-        .icon-warning {
-            background-color: rgba(250, 202, 21, 0.1);
-            color: var(--warning);
-        }
-
-        .icon-secondary {
-            background-color: rgba(126, 58, 242, 0.1);
-            color: var(--secondary);
-        }
-
-        .card-content {
-            margin-top: 16px;
-        }
-
-        .stats-number {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--dark);
-            line-height: 1;
-        }
-
-        .stats-text {
-            font-size: 14px;
             color: var(--gray);
-            margin-top: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
         }
 
-        /* Data Table */
-        .data-section {
+        .tab-btn:hover {
+            color: var(--primary);
+            background-color: rgba(26, 86, 219, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom: 3px solid var(--primary);
             background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
+        }
+
+        /* Content Area */
+        .content-area {
             padding: 32px;
-            margin-bottom: 40px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .section-title {
@@ -332,50 +315,51 @@
             color: var(--dark);
         }
 
-        .table-container {
-            overflow-x: auto;
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
+        .module-card {
             background-color: #f9fafb;
-            padding: 16px;
-            text-align: left;
+            border-radius: var(--border-radius);
+            padding: 24px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .module-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+            background-color: white;
+        }
+
+        .module-card h3 {
+            font-size: 18px;
             font-weight: 600;
             color: var(--dark);
-            border-bottom: 1px solid var(--gray-light);
+            margin-bottom: 12px;
         }
 
-        td {
-            padding: 16px;
-            border-bottom: 1px solid var(--gray-light);
+        .module-card p {
+            font-size: 14px;
+            color: var(--gray);
+            line-height: 1.5;
         }
 
-        tr:hover {
-            background-color: #f9fafb;
-        }
-
-        .status {
-            display: inline-flex;
+        .module-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
             align-items: center;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status-active {
-            background-color: rgba(14, 159, 110, 0.1);
-            color: var(--success);
-        }
-
-        .status-pending {
-            background-color: rgba(250, 202, 21, 0.1);
-            color: var(--warning);
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+            background-color: rgba(26, 86, 219, 0.1);
+            color: var(--primary);
         }
 
         /* Import Section */
@@ -403,67 +387,17 @@
             color: var(--primary);
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .sidebar {
-                width: 80px;
-                overflow: hidden;
-            }
-            
-            .logo h1, .menu-title, .user-details, .menu-item span {
-                display: none;
-            }
-            
-            .menu-item {
-                justify-content: center;
-                padding: 16px;
-            }
-            
-            .user-info {
-                justify-content: center;
-                padding: 16px;
-            }
+        .data-update-info {
+            background-color: #f8fafc;
+            padding: 16px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--gray);
         }
 
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                height: auto;
-                flex-direction: row;
-                justify-content: space-between;
-                padding: 16px;
-            }
-            
-            .logo-container, .user-info {
-                border: none;
-                padding: 0;
-                margin: 0;
-            }
-            
-            .menu-section {
-                display: none;
-            }
-            
-            .header {
-                flex-direction: column;
-                gap: 16px;
-                align-items: flex-start;
-            }
-            
-            .header-actions {
-                width: 100%;
-                flex-wrap: wrap;
-            }
-            
-            .btn {
-                flex: 1;
-                justify-content: center;
-                min-width: 140px;
-            }
+        .data-update-info strong {
+            color: var(--dark);
         }
 
         /* Modal */
@@ -530,17 +464,105 @@
             overflow-y: auto;
         }
 
-        .data-update-info {
-            background-color: #f8fafc;
-            padding: 16px;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--gray);
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                overflow: hidden;
+            }
+            
+            .logo h1, .menu-title, .user-details, .menu-item span, .sub-item {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+                padding: 16px;
+            }
+            
+            .user-info {
+                justify-content: center;
+                padding: 16px;
+            }
+            
+            .sub-menu {
+                margin-left: 0;
+                position: absolute;
+                left: 80px;
+                width: 200px;
+                z-index: 1000;
+            }
         }
 
-        .data-update-info strong {
-            color: var(--dark);
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 16px;
+            }
+            
+            .logo-container, .user-info {
+                border: none;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .menu-section {
+                display: none;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .btn {
+                flex: 1;
+                justify-content: center;
+                min-width: 140px;
+            }
+            
+            .module-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: var(--border-radius);
+            background-color: var(--success);
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
     </style>
 </head>
@@ -556,55 +578,12 @@
             </div>
             
             <div class="menu-section">
-                <div class="menu-title">Principal</div>
-                <a href="#" class="menu-item active">
-                    <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
-                </a>
-            </div>
-            
-            <div class="menu-section">
-                <div class="menu-title">Módulos</div>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-building"></i>
-                    <span>Contratante</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-truck"></i>
-                    <span>Veículos</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-id-card"></i>
-                    <span>Condutores</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-warehouse"></i>
-                    <span>Transportadores</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-file-invoice-dollar"></i>
-                    <span>Emissões</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Monitoramentos</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-link"></i>
-                    <span>Integrações</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Relatórios</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-search"></i>
-                    <span>Consultas</span>
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="fas fa-print"></i>
-                    <span>Padrão de Impressão</span>
-                </a>
+                <div class="menu-title">Módulos do Sistema</div>
+                
+                <!-- Módulos serão gerados dinamicamente via JavaScript -->
+                <div id="menuItems">
+                    <!-- Menu será populado automaticamente -->
+                </div>
             </div>
             
             <div class="user-info">
@@ -620,7 +599,7 @@
         <main class="main-content">
             <!-- Header -->
             <div class="header">
-                <h2>Dashboard de Gestão</h2>
+                <h2 id="pageTitle">Dashboard do Sistema</h2>
                 <div class="header-actions">
                     <div class="file-upload-container">
                         <button class="btn btn-primary" id="importBtn">
@@ -628,102 +607,47 @@
                         </button>
                         <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
                     </div>
-                    <button class="btn btn-secondary">
+                    <button class="btn btn-secondary" id="refreshBtn">
                         <i class="fas fa-sync-alt"></i> Atualizar
                     </button>
                 </div>
             </div>
             
-            <!-- Dashboard Stats -->
-            <div class="dashboard-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Contratantes</h3>
-                        <div class="card-icon icon-primary">
-                            <i class="fas fa-building"></i>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="stats-number" id="contratantesCount">12</div>
-                        <div class="stats-text">Cadastrados no sistema</div>
-                    </div>
+            <!-- Tabs Navigation -->
+            <div class="tabs-container" id="tabsContainer" style="display: none;">
+                <div class="tabs-header" id="tabsHeader">
+                    <!-- Tabs serão geradas dinamicamente -->
                 </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Veículos Ativos</h3>
-                        <div class="card-icon icon-success">
-                            <i class="fas fa-truck"></i>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="stats-number" id="veiculosCount">48</div>
-                        <div class="stats-text">Em operação</div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Condutores</h3>
-                        <div class="card-icon icon-warning">
-                            <i class="fas fa-id-card"></i>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="stats-number" id="condutoresCount">52</div>
-                        <div class="stats-text">Habilitados</div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Operações Hoje</h3>
-                        <div class="card-icon icon-secondary">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="stats-number" id="operacoesCount">127</div>
-                        <div class="stats-text">Emitidas</div>
-                    </div>
+                <div class="content-area" id="tabsContent">
+                    <!-- Conteúdo das tabs será gerado dinamicamente -->
                 </div>
             </div>
             
-            <!-- Import Section -->
-            <div class="import-section">
-                <h3 class="section-title">Importação de Dados</h3>
-                <p>Importe o arquivo Excel (BD_SKU.xlsx) para atualizar as informações do sistema. O arquivo deve conter as abas e sub-abas conforme o padrão estabelecido.</p>
-                
-                <div class="import-info">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <p><strong>Importante:</strong> O arquivo Excel deve manter a estrutura original com as colunas "Aba", "Sub Aba" e "O que é / O que faz".</p>
+            <!-- Main Dashboard -->
+            <div id="dashboardContent">
+                <div class="import-section">
+                    <h3 class="section-title">Bem-vindo ao NDD CARGO</h3>
+                    <p>Sistema completo de gestão para transportadoras. Importe seu arquivo Excel para carregar todos os módulos e funcionalidades do sistema.</p>
+                    
+                    <div class="import-info">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <p><strong>Importante:</strong> O arquivo Excel deve conter as colunas "Aba", "Sub Aba" e "O que é / O que faz" conforme o modelo padrão.</p>
+                            <p>Cada "Aba" se tornará um módulo principal no sistema, com suas "Sub Abas" como funcionalidades específicas.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="data-update-info">
+                        <p><strong>Status do sistema:</strong> <span id="systemStatus">Aguardando importação de dados</span></p>
+                        <p><strong>Módulos carregados:</strong> <span id="modulesCount">0</span></p>
+                        <p><strong>Última atualização:</strong> <span id="lastUpdate">Nenhuma importação realizada</span></p>
                     </div>
                 </div>
                 
-                <div class="data-update-info">
-                    <p><strong>Última atualização:</strong> <span id="lastUpdate">Nenhuma importação realizada</span></p>
-                    <p><strong>Total de registros carregados:</strong> <span id="totalRecords">0</span></p>
-                </div>
-            </div>
-            
-            <!-- Data Table -->
-            <div class="data-section">
-                <h3 class="section-title">Funcionalidades do Sistema</h3>
-                <div class="table-container">
-                    <table id="dataTable">
-                        <thead>
-                            <tr>
-                                <th>Aba</th>
-                                <th>Sub Aba</th>
-                                <th>Descrição / Funcionalidade</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <!-- Dados serão carregados via JavaScript -->
-                        </tbody>
-                    </table>
+                <div style="text-align: center; margin-top: 40px; color: var(--gray);">
+                    <i class="fas fa-file-excel" style="font-size: 48px; margin-bottom: 16px;"></i>
+                    <h3 style="margin-bottom: 8px;">Importe seu arquivo para começar</h3>
+                    <p>Clique no botão "Importar Excel" para carregar todos os módulos do sistema</p>
                 </div>
             </div>
         </main>
@@ -738,6 +662,7 @@
             </div>
             <div class="modal-body">
                 <p>Selecione o arquivo Excel (BD_SKU.xlsx) para importar os dados para o sistema.</p>
+                <p>Cada "Aba" no Excel será transformada em um módulo do sistema, com suas respectivas funcionalidades.</p>
                 
                 <div style="margin: 20px 0;">
                     <label for="fileInput" class="btn btn-secondary" style="display: inline-block;">
@@ -758,36 +683,72 @@
         </div>
     </div>
     
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+    
     <script>
-        // Dados iniciais baseados na imagem e Excel fornecidos
-        const initialData = [
-            { aba: "Contratante", subAba: "Dados Cadastrais", descricao: "Atualizar dados da contratante", status: "ativo" },
-            { aba: "Contratante", subAba: "Emitentes", descricao: "Lista de todos os emitentes cadastrados, permite editar e criar novos cadastros", status: "ativo" },
-            { aba: "Contratante", subAba: "Usuários", descricao: "Lista de todos os usuários cadastrados, permite editar e criar novos cadastros", status: "ativo" },
-            { aba: "Contratante", subAba: "Colaboradores", descricao: "Lista de colaboradores cadastrados, permite editar e criar novos cadastros", status: "ativo" },
-            { aba: "Contratante", subAba: "Regras de Valores", descricao: "Editar regras de valores máxi e min de pago frete e VPO", status: "ativo" },
-            { aba: "Contratante", subAba: "Regras de Parcela", descricao: "Lista de todas regras de parcela cadastradas, permite editar e criar novas", status: "ativo" },
-            { aba: "Contratante", subAba: "Modelos de Rota", descricao: "Lista de todos as rotas cadastradas, permite editar e criar novas rotas", status: "ativo" },
-            { aba: "Contratante", subAba: "Estoques de Cartões", descricao: "Define a qtd. aceitável e quantidade crítica de cartões frete em seu estoque", status: "ativo" },
-            { aba: "Contratante", subAba: "Responsabilidades", descricao: "Dispara e-mails quando determinadas situações ocorrem nos processos", status: "ativo" },
-            { aba: "Contratante", subAba: "Minha Conta Digital", descricao: "Extrato de conta digital/movimentações realizadas", status: "ativo" },
-            { aba: "Contratante", subAba: "Configurações", descricao: "Configurações do sistema", status: "ativo" },
-            { aba: "Veículos", subAba: "Veículos", descricao: "Lista de todos os veículos cadastrados, permite editar e criar novos cadastros", status: "ativo" },
-            { aba: "Condutores", subAba: "Condutores", descricao: "Permite editar e criar cadastros de novos condutores", status: "ativo" },
-            { aba: "Transportadores", subAba: "Transportadores", descricao: "Permite editar e criar cadastros de novos transportadores", status: "ativo" },
-        ];
+        // Dados do sistema
+        let systemData = {
+            modules: [],
+            lastUpdate: null
+        };
 
-        // Variáveis globais
-        let currentData = [...initialData];
-        let fileData = null;
+        // Mapeamento de ícones para cada módulo
+        const moduleIcons = {
+            "Contratante": "fas fa-building",
+            "Veículos": "fas fa-truck",
+            "Condutores": "fas fa-id-card",
+            "Transportadores": "fas fa-warehouse",
+            "Emissões": "fas fa-file-invoice-dollar",
+            "Monitoramentos": "fas fa-chart-line",
+            "Integrações": "fas fa-link",
+            "Relatórios": "fas fa-chart-bar",
+            "Consultas": "fas fa-search",
+            "Padrão de Impressão": "fas fa-print"
+        };
 
-        // Inicializar a tabela com dados iniciais
+        // Inicializar o sistema
         document.addEventListener('DOMContentLoaded', function() {
-            loadDataToTable(currentData);
+            // Carregar dados iniciais do exemplo
+            loadExampleData();
             
-            // Configurar botões e eventos
+            // Configurar eventos
+            setupEventListeners();
+            
+            // Atualizar interface
+            updateUI();
+        });
+
+        // Carregar dados de exemplo
+        function loadExampleData() {
+            // Dados baseados no Excel fornecido
+            const exampleData = [
+                { aba: "Contratante", subAba: "Dados Cadastrais", descricao: "Atualizar dados da contratante" },
+                { aba: "Contratante", subAba: "Emitentes", descricao: "Lista de todos os emitentes cadastrados, permite editar e criar novos cadastros" },
+                { aba: "Contratante", subAba: "Usuários", descricao: "Lista de todos os usuários cadastrados, permite editar e criar novos cadastros" },
+                { aba: "Contratante", subAba: "Colaboradores", descricao: "Lista de colaboradores cadastrados, permite editar e criar novos cadastros" },
+                { aba: "Contratante", subAba: "Regras de Valores", descricao: "Editar regras de valores máxi e mín de pgto frete e VPO" },
+                { aba: "Contratante", subAba: "Regras de Parcela", descricao: "Lista de todas regras de parcela cadastradas, permite editar e criar novas" },
+                { aba: "Contratante", subAba: "Modelos de Rota", descricao: "Lista de todos as rotas cadastradas, permite editar e criar novas rotas" },
+                { aba: "Contratante", subAba: "Estoques de Cartões", descricao: "Define a qtde aceitável e quantidade crítica de cartões frete em seu estoque" },
+                { aba: "Contratante", subAba: "Responsabilidades", descricao: "Dispara e-mails quando determinadas situações ocorrem nos processos" },
+                { aba: "Contratante", subAba: "Minha Conta Digital", descricao: "Extrato de conta digital/movimentações realizadas" },
+                { aba: "Contratante", subAba: "Configurações", descricao: "Configurações do sistema" }
+            ];
+            
+            processExcelData(exampleData);
+        }
+
+        // Configurar eventos
+        function setupEventListeners() {
+            // Botão de importação
             document.getElementById('importBtn').addEventListener('click', openImportModal);
             document.getElementById('excelFile').addEventListener('change', handleFileSelect);
+            
+            // Botão de atualizar
+            document.getElementById('refreshBtn').addEventListener('click', refreshSystem);
+            
+            // Modal de importação
             document.getElementById('closeModal').addEventListener('click', closeImportModal);
             document.getElementById('cancelImport').addEventListener('click', closeImportModal);
             document.getElementById('fileInput').addEventListener('change', handleModalFileSelect);
@@ -799,48 +760,252 @@
                     closeImportModal();
                 }
             });
-        });
+        }
 
-        // Carregar dados na tabela
-        function loadDataToTable(data) {
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = '';
+        // Processar dados do Excel
+        function processExcelData(excelData) {
+            const modulesMap = {};
             
-            // Contadores para estatísticas
-            let contratantesCount = 0;
-            let veiculosCount = 0;
-            let condutoresCount = 0;
-            let operacoesCount = 0;
-            
-            data.forEach(item => {
-                const row = document.createElement('tr');
+            // Organizar dados por módulo (aba)
+            excelData.forEach(item => {
+                if (!item.aba || !item.subAba) return;
                 
-                // Contar para estatísticas
-                if (item.aba === "Contratante") contratantesCount++;
-                if (item.aba === "Veículos") veiculosCount++;
-                if (item.aba === "Condutores") condutoresCount++;
-                if (item.aba === "Emissões") operacoesCount++;
+                if (!modulesMap[item.aba]) {
+                    modulesMap[item.aba] = {
+                        name: item.aba,
+                        icon: moduleIcons[item.aba] || "fas fa-folder",
+                        functionalities: []
+                    };
+                }
                 
-                // Determinar classe de status
-                const statusClass = item.status === 'ativo' ? 'status-active' : 'status-pending';
-                const statusText = item.status === 'ativo' ? 'Ativo' : 'Pendente';
-                
-                row.innerHTML = `
-                    <td>${item.aba}</td>
-                    <td>${item.subAba}</td>
-                    <td>${item.descricao}</td>
-                    <td><span class="status ${statusClass}">${statusText}</span></td>
-                `;
-                
-                tableBody.appendChild(row);
+                modulesMap[item.aba].functionalities.push({
+                    name: item.subAba,
+                    description: item.descricao || "Sem descrição"
+                });
             });
             
-            // Atualizar contadores no dashboard
-            document.getElementById('contratantesCount').textContent = contratantesCount || 12;
-            document.getElementById('veiculosCount').textContent = veiculosCount || 48;
-            document.getElementById('condutoresCount').textContent = condutoresCount || 52;
-            document.getElementById('operacoesCount').textContent = operacoesCount || 127;
-            document.getElementById('totalRecords').textContent = data.length;
+            // Converter para array
+            systemData.modules = Object.values(modulesMap);
+            
+            // Atualizar data da última importação
+            const now = new Date();
+            systemData.lastUpdate = now;
+            
+            // Atualizar interface
+            updateUI();
+            
+            // Mostrar notificação
+            showNotification(`Sistema atualizado com ${systemData.modules.length} módulos carregados`, 'success');
+        }
+
+        // Atualizar interface do usuário
+        function updateUI() {
+            // Atualizar menu lateral
+            updateMenu();
+            
+            // Atualizar informações do sistema
+            updateSystemInfo();
+            
+            // Se houver módulos, mostrar a área de módulos
+            if (systemData.modules.length > 0) {
+                showModulesArea();
+            } else {
+                showDashboard();
+            }
+        }
+
+        // Atualizar menu lateral
+        function updateMenu() {
+            const menuContainer = document.getElementById('menuItems');
+            menuContainer.innerHTML = '';
+            
+            systemData.modules.forEach(module => {
+                const menuItem = document.createElement('div');
+                menuItem.className = 'menu-item';
+                menuItem.setAttribute('data-module', module.name);
+                
+                menuItem.innerHTML = `
+                    <i class="${module.icon}"></i>
+                    <span>${module.name}</span>
+                    <i class="fas fa-chevron-down" style="margin-left: auto; font-size: 12px;"></i>
+                `;
+                
+                // Criar submenu
+                const subMenu = document.createElement('div');
+                subMenu.className = 'sub-menu';
+                subMenu.id = `submenu-${module.name.replace(/\s+/g, '-')}`;
+                
+                module.functionalities.forEach(func => {
+                    const subItem = document.createElement('div');
+                    subItem.className = 'sub-item';
+                    subItem.textContent = func.name;
+                    subItem.setAttribute('data-module', module.name);
+                    subItem.setAttribute('data-function', func.name);
+                    subItem.addEventListener('click', function() {
+                        openModule(module.name, func.name);
+                    });
+                    subMenu.appendChild(subItem);
+                });
+                
+                // Evento para expandir/colapsar submenu
+                menuItem.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Fechar outros submenus
+                    document.querySelectorAll('.sub-menu').forEach(sub => {
+                        if (sub !== subMenu) {
+                            sub.classList.remove('active');
+                        }
+                    });
+                    
+                    // Alternar submenu atual
+                    subMenu.classList.toggle('active');
+                    
+                    // Atualizar ícone
+                    const icon = this.querySelector('.fa-chevron-down');
+                    if (subMenu.classList.contains('active')) {
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    } else {
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    }
+                });
+                
+                menuContainer.appendChild(menuItem);
+                menuContainer.appendChild(subMenu);
+            });
+        }
+
+        // Atualizar informações do sistema
+        function updateSystemInfo() {
+            document.getElementById('modulesCount').textContent = systemData.modules.length;
+            
+            if (systemData.lastUpdate) {
+                const date = systemData.lastUpdate;
+                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                document.getElementById('lastUpdate').textContent = formattedDate;
+                document.getElementById('systemStatus').textContent = 'Sistema carregado';
+            }
+        }
+
+        // Mostrar área de módulos
+        function showModulesArea() {
+            document.getElementById('dashboardContent').style.display = 'none';
+            document.getElementById('tabsContainer').style.display = 'block';
+            
+            // Atualizar título
+            document.getElementById('pageTitle').textContent = 'Módulos do Sistema';
+            
+            // Criar tabs
+            createTabs();
+        }
+
+        // Mostrar dashboard inicial
+        function showDashboard() {
+            document.getElementById('dashboardContent').style.display = 'block';
+            document.getElementById('tabsContainer').style.display = 'none';
+            document.getElementById('pageTitle').textContent = 'Dashboard do Sistema';
+        }
+
+        // Criar tabs para cada módulo
+        function createTabs() {
+            const tabsHeader = document.getElementById('tabsHeader');
+            const tabsContent = document.getElementById('tabsContent');
+            
+            tabsHeader.innerHTML = '';
+            tabsContent.innerHTML = '';
+            
+            systemData.modules.forEach((module, index) => {
+                // Criar botão da tab
+                const tabBtn = document.createElement('button');
+                tabBtn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
+                tabBtn.textContent = module.name;
+                tabBtn.setAttribute('data-tab', module.name.replace(/\s+/g, '-'));
+                
+                tabBtn.addEventListener('click', function() {
+                    // Remover classe active de todas as tabs
+                    document.querySelectorAll('.tab-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Adicionar classe active à tab clicada
+                    this.classList.add('active');
+                    
+                    // Mostrar conteúdo correspondente
+                    document.querySelectorAll('.tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+                
+                tabsHeader.appendChild(tabBtn);
+                
+                // Criar conteúdo da tab
+                const tabContent = document.createElement('div');
+                tabContent.className = `tab-content ${index === 0 ? 'active' : ''}`;
+                tabContent.id = `tab-${module.name.replace(/\s+/g, '-')}`;
+                
+                let contentHTML = `<h3 class="section-title">${module.name}</h3>`;
+                contentHTML += `<p style="margin-bottom: 24px; color: var(--gray);">Gerencie todas as funcionalidades relacionadas a ${module.name.toLowerCase()}</p>`;
+                contentHTML += '<div class="module-grid">';
+                
+                module.functionalities.forEach(func => {
+                    contentHTML += `
+                        <div class="module-card" onclick="openFunctionality('${module.name}', '${func.name}')">
+                            <div class="module-icon">
+                                <i class="${module.icon}"></i>
+                            </div>
+                            <h3>${func.name}</h3>
+                            <p>${func.description}</p>
+                        </div>
+                    `;
+                });
+                
+                contentHTML += '</div>';
+                tabContent.innerHTML = contentHTML;
+                tabsContent.appendChild(tabContent);
+            });
+        }
+
+        // Abrir módulo específico
+        function openModule(moduleName, functionName) {
+            // Encontrar a tab do módulo
+            const tabId = moduleName.replace(/\s+/g, '-');
+            const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+            
+            if (tabBtn) {
+                // Ativar a tab
+                document.querySelectorAll('.tab-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                tabBtn.classList.add('active');
+                
+                // Mostrar conteúdo da tab
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+                
+                // Mostrar notificação
+                showNotification(`${moduleName} > ${functionName}`, 'info');
+            }
+        }
+
+        // Abrir funcionalidade
+        function openFunctionality(moduleName, functionName) {
+            showNotification(`Abrindo ${functionName} em ${moduleName}`, 'info');
+        }
+
+        // Atualizar sistema
+        function refreshSystem() {
+            if (systemData.modules.length > 0) {
+                showNotification('Sistema atualizado', 'success');
+            } else {
+                showNotification('Importe um arquivo Excel para carregar o sistema', 'warning');
+            }
         }
 
         // Abrir modal de importação
@@ -854,7 +1019,6 @@
         // Fechar modal de importação
         function closeImportModal() {
             document.getElementById('importModal').style.display = 'none';
-            fileData = null;
         }
 
         // Manipular seleção de arquivo no modal
@@ -879,42 +1043,47 @@
             const reader = new FileReader();
             
             reader.onload = function(e) {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-                
-                // Supondo que os dados estão na primeira planilha
-                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-                
-                // Processar os dados do Excel
-                fileData = processExcelData(jsonData);
-                
-                // Mostrar pré-visualização
-                showImportPreview(fileData);
-                
-                if (directImport) {
-                    // Importação direta
-                    importDataFromFile(fileData);
-                } else {
-                    // Habilitar botão de confirmação no modal
-                    document.getElementById('confirmImport').disabled = false;
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    
+                    // Supondo que os dados estão na primeira planilha
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                    
+                    // Processar os dados do Excel
+                    const processedData = processExcelDataFromFile(jsonData);
+                    
+                    // Mostrar pré-visualização
+                    showImportPreview(processedData);
+                    
+                    if (directImport) {
+                        // Importação direta
+                        importDataFromFile(processedData);
+                    } else {
+                        // Habilitar botão de confirmação no modal
+                        document.getElementById('confirmImport').disabled = false;
+                    }
+                } catch (error) {
+                    showNotification('Erro ao ler o arquivo Excel', 'error');
+                    console.error('Erro:', error);
                 }
             };
             
             reader.readAsArrayBuffer(file);
         }
 
-        // Processar dados do Excel
-        function processExcelData(excelData) {
+        // Processar dados do Excel do arquivo
+        function processExcelDataFromFile(excelData) {
             const processedData = [];
             
             // Ignorar cabeçalho (primeira linha)
             for (let i = 1; i < excelData.length; i++) {
                 const row = excelData[i];
-                if (row && row.length >= 3) {
+                if (row && row.length >= 3 && row[0] && row[1]) {
                     processedData.push({
-                        aba: row[0] || '',
-                        subAba: row[1] || '',
+                        aba: row[0],
+                        subAba: row[1],
                         descricao: row[2] || ''
                     });
                 }
@@ -933,121 +1102,80 @@
                 return;
             }
             
-            let previewHTML = '<h4 style="margin-bottom: 12px;">Pré-visualização (primeiras 5 linhas):</h4>';
-            previewHTML += '<table style="width: 100%; border-collapse: collapse;">';
-            previewHTML += '<thead><tr><th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Aba</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Sub Aba</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Descrição</th></tr></thead>';
-            previewHTML += '<tbody>';
+            // Agrupar por módulo para exibição
+            const modulesPreview = {};
+            data.forEach(item => {
+                if (!modulesPreview[item.aba]) {
+                    modulesPreview[item.aba] = [];
+                }
+                modulesPreview[item.aba].push(item);
+            });
             
-            const limit = Math.min(data.length, 5);
-            for (let i = 0; i < limit; i++) {
-                previewHTML += `<tr>
-                    <td style="padding: 8px; border: 1px solid #ddd;">${data[i].aba}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">${data[i].subAba}</td>
-                    <td style="padding: 8px; border: 1px solid #ddd;">${data[i].descricao.substring(0, 80)}${data[i].descricao.length > 80 ? '...' : ''}</td>
-                </tr>`;
-            }
+            let previewHTML = '<h4 style="margin-bottom: 12px;">Pré-visualização da importação:</h4>';
             
-            previewHTML += '</tbody></table>';
-            previewHTML += `<p style="margin-top: 12px; font-size: 14px; color: var(--gray);">Total de registros encontrados: ${data.length}</p>`;
+            Object.keys(modulesPreview).forEach(moduleName => {
+                previewHTML += `<div style="margin-bottom: 16px; padding: 12px; background-color: #f5f5f5; border-radius: 8px;">`;
+                previewHTML += `<strong style="color: var(--primary);">${moduleName}</strong>`;
+                previewHTML += `<ul style="margin-top: 8px; padding-left: 20px;">`;
+                
+                modulesPreview[moduleName].slice(0, 3).forEach(item => {
+                    previewHTML += `<li style="margin-bottom: 4px; font-size: 14px;">${item.subAba}</li>`;
+                });
+                
+                if (modulesPreview[moduleName].length > 3) {
+                    previewHTML += `<li style="font-size: 12px; color: var(--gray);">+ ${modulesPreview[moduleName].length - 3} funcionalidades</li>`;
+                }
+                
+                previewHTML += '</ul></div>';
+            });
+            
+            previewHTML += `<p style="margin-top: 12px; font-size: 14px; color: var(--gray);">Total de módulos: ${Object.keys(modulesPreview).length} | Total de funcionalidades: ${data.length}</p>`;
             
             previewContainer.innerHTML = previewHTML;
         }
 
         // Importar dados do modal
         function importData() {
-            if (fileData && fileData.length > 0) {
-                importDataFromFile(fileData);
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                readExcelFile(fileInput.files[0], true);
                 closeImportModal();
             }
         }
 
         // Importar dados do arquivo
         function importDataFromFile(data) {
-            // Atualizar os dados atuais
-            currentData = data.map(item => ({
-                ...item,
-                status: 'ativo' // Definir todos como ativos por padrão
-            }));
-            
-            // Atualizar a tabela
-            loadDataToTable(currentData);
-            
-            // Atualizar informações de última importação
-            const now = new Date();
-            const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
-            
-            document.getElementById('lastUpdate').textContent = formattedDate;
-            document.getElementById('totalRecords').textContent = currentData.length;
-            
-            // Mostrar mensagem de sucesso
-            showNotification('Dados importados com sucesso!', 'success');
+            processExcelData(data);
         }
 
         // Mostrar notificação
         function showNotification(message, type = 'info') {
-            // Criar elemento de notificação
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                padding: 16px 24px;
-                border-radius: var(--border-radius);
-                background-color: ${type === 'success' ? 'var(--success)' : 'var(--primary)'};
-                color: white;
-                font-weight: 600;
-                box-shadow: var(--shadow-lg);
-                z-index: 10000;
-                animation: slideIn 0.3s ease;
-            `;
+            const notification = document.getElementById('notification');
             
+            // Definir cor baseada no tipo
+            let backgroundColor = '';
+            switch(type) {
+                case 'success': backgroundColor = 'var(--success)'; break;
+                case 'error': backgroundColor = 'var(--danger)'; break;
+                case 'warning': backgroundColor = 'var(--warning)'; break;
+                default: backgroundColor = 'var(--primary)';
+            }
+            
+            notification.style.backgroundColor = backgroundColor;
             notification.textContent = message;
-            document.body.appendChild(notification);
+            notification.style.display = 'block';
+            
+            // Animar entrada
+            notification.style.animation = 'slideIn 0.3s ease';
             
             // Remover após 3 segundos
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => {
-                    document.body.removeChild(notification);
+                    notification.style.display = 'none';
                 }, 300);
             }, 3000);
-            
-            // Adicionar animações CSS se não existirem
-            if (!document.querySelector('#notificationStyles')) {
-                const style = document.createElement('style');
-                style.id = 'notificationStyles';
-                style.textContent = `
-                    @keyframes slideIn {
-                        from { transform: translateX(100%); opacity: 0; }
-                        to { transform: translateX(0); opacity: 1; }
-                    }
-                    @keyframes slideOut {
-                        from { transform: translateX(0); opacity: 1; }
-                        to { transform: translateX(100%); opacity: 0; }
-                    }
-                `;
-                document.head.appendChild(style);
-            }
         }
-
-        // Adicionar funcionalidade aos itens do menu
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remover classe active de todos os itens
-                document.querySelectorAll('.menu-item').forEach(i => {
-                    i.classList.remove('active');
-                });
-                
-                // Adicionar classe active ao item clicado
-                this.classList.add('active');
-                
-                // Mostrar mensagem (simulação)
-                const moduleName = this.querySelector('span').textContent;
-                showNotification(`Módulo ${moduleName} selecionado`, 'info');
-            });
-        });
     </script>
 </body>
 </html>
