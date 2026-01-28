@@ -1,298 +1,339 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Power BI Clone - Puro JavaScript</title>
-    
-    <!-- Biblioteca para gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- Biblioteca para Excel -->
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-    
-    <!-- Biblioteca para arrastar -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/interact.js/1.10.11/interact.min.js"></script>
-    
-    <!-- FontAwesome para ícones -->
+    <title>NDD CARGO | Sistema de Gestão de Transportes</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
+        :root {
+            --primary: #1a56db;
+            --primary-dark: #1e429f;
+            --secondary: #7e3af2;
+            --success: #0e9f6e;
+            --warning: #faca15;
+            --danger: #f05252;
+            --light: #f9fafb;
+            --dark: #1f2a37;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --border-radius: 12px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f3f6f9;
-            height: 100vh;
-            overflow: hidden;
+            background-color: #f8fafc;
+            color: var(--dark);
+            line-height: 1.6;
         }
 
-        /* HEADER */
-        .header {
-            background: #0078d4;
-            color: white;
-            padding: 15px 30px;
+        .container {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: linear-gradient(180deg, #1f2a37 0%, #111827 100%);
+            color: white;
+            padding: 24px 0;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-lg);
+            z-index: 100;
+        }
+
+        .logo-container {
+            padding: 0 24px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 24px;
-            font-weight: bold;
+            gap: 12px;
         }
 
         .logo i {
             font-size: 28px;
+            color: var(--primary);
         }
 
-        /* LAYOUT PRINCIPAL */
-        .container {
+        .logo h1 {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .menu-section {
+            margin-bottom: 32px;
+        }
+
+        .menu-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255, 255, 255, 0.5);
+            padding: 0 24px;
+            margin-bottom: 12px;
+        }
+
+        .menu-item {
             display: flex;
-            height: calc(100vh - 70px);
+            align-items: center;
+            gap: 12px;
+            padding: 14px 24px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
         }
 
-        /* SIDEBAR */
-        .sidebar {
-            width: 280px;
-            background: white;
-            border-right: 1px solid #ddd;
-            padding: 20px;
+        .menu-item:hover, .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: white;
+            border-left: 3px solid var(--primary);
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .user-info {
+            margin-top: auto;
+            padding: 20px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .user-details h4 {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .user-details p {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 24px;
             overflow-y: auto;
         }
 
-        .sidebar h3 {
-            color: #0078d4;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #0078d4;
-        }
-
-        .chart-types {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .chart-btn {
-            background: #f8f9fa;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 15px 5px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-
-        .chart-btn:hover {
-            background: #e6f2ff;
-            border-color: #0078d4;
-        }
-
-        .chart-btn.active {
-            background: #e6f2ff;
-            border-color: #0078d4;
-            color: #0078d4;
-        }
-
-        .chart-btn i {
-            font-size: 24px;
-        }
-
-        .config-panel {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .config-group {
-            margin-bottom: 15px;
-        }
-
-        .config-group label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        .config-input, .config-select {
-            width: 100%;
-            padding: 8px 12px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .add-btn {
-            background: #0078d4;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            margin-top: 15px;
-            transition: background 0.3s;
-        }
-
-        .add-btn:hover {
-            background: #106ebe;
-        }
-
-        /* ÁREA DE UPLOAD */
-        .upload-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            padding: 40px;
-        }
-
-        .upload-box {
-            border: 3px dashed #0078d4;
-            border-radius: 15px;
-            padding: 60px 40px;
-            text-align: center;
-            background: #f0f8ff;
-            cursor: pointer;
-            transition: all 0.3s;
-            max-width: 500px;
-            width: 100%;
-        }
-
-        .upload-box:hover {
-            background: #e6f2ff;
-        }
-
-        .upload-box i {
-            font-size: 64px;
-            color: #0078d4;
-            margin-bottom: 20px;
-        }
-
-        .upload-box h2 {
-            color: #333;
-            margin-bottom: 10px;
-        }
-
-        .upload-box p {
-            color: #666;
-            margin: 15px 0;
-        }
-
-        .upload-btn {
-            background: #0078d4;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        /* DASHBOARD */
-        .dashboard {
-            flex: 1;
-            padding: 20px;
-            overflow: auto;
-            background: #f8f9fa;
-            display: none;
-        }
-
-        .dashboard.active {
-            display: block;
-        }
-
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 20px;
-            padding: 20px;
-        }
-
-        /* WIDGET */
-        .widget {
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
-            min-height: 300px;
-        }
-
-        .widget-header {
-            background: #f8f9fa;
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            cursor: move;
+            margin-bottom: 32px;
         }
 
-        .widget-title {
-            font-weight: bold;
-            color: #333;
+        .header h2 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--dark);
         }
 
-        .widget-controls button {
-            background: none;
-            border: none;
+        .header-actions {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
             cursor: pointer;
-            color: #999;
-            margin-left: 10px;
-            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 14px;
         }
 
-        .widget-controls button:hover {
-            color: #ff4444;
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
         }
 
-        .widget-content {
-            padding: 20px;
-            height: calc(100% - 60px);
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .chart-container {
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--gray-light);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        .file-upload-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-upload-container input[type=file] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
             width: 100%;
             height: 100%;
-            position: relative;
+            cursor: pointer;
         }
 
-        /* DATA TABLE */
-        .data-table {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            overflow: auto;
-            max-height: 400px;
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
         }
 
-        .data-table h3 {
-            margin-bottom: 15px;
-            color: #0078d4;
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .icon-primary {
+            background-color: rgba(26, 86, 219, 0.1);
+            color: var(--primary);
+        }
+
+        .icon-success {
+            background-color: rgba(14, 159, 110, 0.1);
+            color: var(--success);
+        }
+
+        .icon-warning {
+            background-color: rgba(250, 202, 21, 0.1);
+            color: var(--warning);
+        }
+
+        .icon-secondary {
+            background-color: rgba(126, 58, 242, 0.1);
+            color: var(--secondary);
+        }
+
+        .card-content {
+            margin-top: 16px;
+        }
+
+        .stats-number {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--dark);
+            line-height: 1;
+        }
+
+        .stats-text {
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        /* Data Table */
+        .data-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--dark);
+        }
+
+        .table-container {
+            overflow-x: auto;
         }
 
         table {
@@ -300,37 +341,90 @@
             border-collapse: collapse;
         }
 
-        th, td {
-            padding: 12px 15px;
+        th {
+            background-color: #f9fafb;
+            padding: 16px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 1px solid var(--gray-light);
         }
 
-        th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #333;
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-light);
         }
 
         tr:hover {
-            background: #f5f5f5;
+            background-color: #f9fafb;
         }
 
-        /* MENSAGENS */
-        .message {
+        .status {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: rgba(14, 159, 110, 0.1);
+            color: var(--success);
+        }
+
+        .status-pending {
+            background-color: rgba(250, 202, 21, 0.1);
+            color: var(--warning);
+        }
+
+        /* Import Section */
+        .import-section {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 32px;
+            margin-bottom: 40px;
+        }
+
+        .import-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background-color: #f0f9ff;
             padding: 20px;
-            text-align: center;
-            color: #666;
-            font-size: 18px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
         }
 
-        /* DRAGGABLE */
-        .draggable {
-            touch-action: none;
-            user-select: none;
+        .import-info i {
+            font-size: 24px;
+            color: var(--primary);
         }
 
-        /* RESPONSIVO */
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+                overflow: hidden;
+            }
+            
+            .logo h1, .menu-title, .user-details, .menu-item span {
+                display: none;
+            }
+            
+            .menu-item {
+                justify-content: center;
+                padding: 16px;
+            }
+            
+            .user-info {
+                justify-content: center;
+                padding: 16px;
+            }
+        }
+
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -339,667 +433,621 @@
             .sidebar {
                 width: 100%;
                 height: auto;
-                border-right: none;
-                border-bottom: 1px solid #ddd;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 16px;
             }
             
-            .dashboard-grid {
-                grid-template-columns: 1fr;
+            .logo-container, .user-info {
+                border: none;
+                padding: 0;
+                margin: 0;
             }
+            
+            .menu-section {
+                display: none;
+            }
+            
+            .header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+            
+            .header-actions {
+                width: 100%;
+                flex-wrap: wrap;
+            }
+            
+            .btn {
+                flex: 1;
+                justify-content: center;
+                min-width: 140px;
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: var(--border-radius);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .modal-footer {
+            padding: 24px;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .import-preview {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .data-update-info {
+            background-color: #f8fafc;
+            padding: 16px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .data-update-info strong {
+            color: var(--dark);
         }
     </style>
 </head>
 <body>
-    <!-- HEADER -->
-    <div class="header">
-        <div class="logo">
-            <i class="fas fa-chart-line"></i>
-            <span>Power BI Clone</span>
-        </div>
-        <div>
-            <button id="resetBtn" class="upload-btn">
-                <i class="fas fa-redo"></i> Novo Dashboard
-            </button>
-        </div>
-    </div>
-
-    <!-- CONTAINER PRINCIPAL -->
     <div class="container">
-        <!-- SIDEBAR (só aparece depois de carregar dados) -->
-        <div class="sidebar" id="sidebar" style="display: none;">
-            <h3><i class="fas fa-chart-bar"></i> Visualizações</h3>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h1>NDD CARGO</h1>
+                </div>
+            </div>
             
-            <div class="chart-types">
-                <button class="chart-btn" data-type="line">
+            <div class="menu-section">
+                <div class="menu-title">Principal</div>
+                <a href="#" class="menu-item active">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            
+            <div class="menu-section">
+                <div class="menu-title">Módulos</div>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-building"></i>
+                    <span>Contratante</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-truck"></i>
+                    <span>Veículos</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-id-card"></i>
+                    <span>Condutores</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Transportadores</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <span>Emissões</span>
+                </a>
+                <a href="#" class="menu-item">
                     <i class="fas fa-chart-line"></i>
-                    <span>Linha</span>
-                </button>
-                <button class="chart-btn" data-type="bar">
+                    <span>Monitoramentos</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-link"></i>
+                    <span>Integrações</span>
+                </a>
+                <a href="#" class="menu-item">
                     <i class="fas fa-chart-bar"></i>
-                    <span>Barras</span>
-                </button>
-                <button class="chart-btn" data-type="pie">
-                    <i class="fas fa-chart-pie"></i>
-                    <span>Pizza</span>
-                </button>
-                <button class="chart-btn" data-type="doughnut">
-                    <i class="fas fa-chart-pie"></i>
-                    <span>Rosca</span>
-                </button>
-                <button class="chart-btn" data-type="radar">
-                    <i class="fas fa-bullseye"></i>
-                    <span>Radar</span>
-                </button>
-                <button class="chart-btn" data-type="table">
-                    <i class="fas fa-table"></i>
-                    <span>Tabela</span>
-                </button>
+                    <span>Relatórios</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-search"></i>
+                    <span>Consultas</span>
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="fas fa-print"></i>
+                    <span>Padrão de Impressão</span>
+                </a>
             </div>
-
-            <div class="config-panel">
-                <h4>Configurar Gráfico</h4>
-                
-                <div class="config-group">
-                    <label>Título:</label>
-                    <input type="text" id="chartTitle" class="config-input" placeholder="Digite o título">
+            
+            <div class="user-info">
+                <div class="user-avatar">AD</div>
+                <div class="user-details">
+                    <h4>Admin Usuário</h4>
+                    <p>Administrador do Sistema</p>
                 </div>
-
-                <div class="config-group">
-                    <label>Eixo X:</label>
-                    <select id="xAxis" class="config-select">
-                        <option value="">Selecione a coluna</option>
-                    </select>
-                </div>
-
-                <div class="config-group">
-                    <label>Eixo Y:</label>
-                    <select id="yAxis" class="config-select">
-                        <option value="">Selecione a coluna</option>
-                    </select>
-                </div>
-
-                <div class="config-group">
-                    <label>Cor do Gráfico:</label>
-                    <input type="color" id="chartColor" class="config-input" value="#0078d4">
-                </div>
-
-                <button id="addChartBtn" class="add-btn">
-                    <i class="fas fa-plus"></i> Adicionar ao Dashboard
-                </button>
             </div>
-
-            <!-- VISUALIZAÇÃO DOS DADOS -->
-            <div class="data-table" id="dataPreview">
-                <h3><i class="fas fa-database"></i> Dados Carregados</h3>
-                <div id="tableContainer"></div>
-            </div>
-        </div>
-
-        <!-- CONTEÚDO PRINCIPAL -->
-        <div class="main-content">
-            <!-- TELA DE UPLOAD -->
-            <div class="upload-area" id="uploadArea">
-                <div class="upload-box" id="dropZone">
-                    <i class="fas fa-file-excel"></i>
-                    <h2>Arraste e solte seu arquivo Excel aqui</h2>
-                    <p>ou</p>
-                    <button class="upload-btn" id="fileInputBtn">
-                        <i class="fas fa-upload"></i> Selecionar Arquivo
-                    </button>
-                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
-                    <p style="margin-top: 20px; font-size: 14px;">
-                        Formatos suportados: .xlsx, .xls, .csv
-                    </p>
-                    
-                    <!-- DADOS DE EXEMPLO -->
-                    <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ddd;">
-                        <p>Não tem um arquivo? Use nossos dados de exemplo:</p>
-                        <button class="upload-btn" id="sampleDataBtn" style="background: #28a745;">
-                            <i class="fas fa-magic"></i> Carregar Dados de Exemplo
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <div class="header">
+                <h2>Dashboard de Gestão</h2>
+                <div class="header-actions">
+                    <div class="file-upload-container">
+                        <button class="btn btn-primary" id="importBtn">
+                            <i class="fas fa-file-import"></i> Importar Excel
                         </button>
+                        <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
+                    </div>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Dashboard Stats -->
+            <div class="dashboard-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Contratantes</h3>
+                        <div class="card-icon icon-primary">
+                            <i class="fas fa-building"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-number" id="contratantesCount">12</div>
+                        <div class="stats-text">Cadastrados no sistema</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Veículos Ativos</h3>
+                        <div class="card-icon icon-success">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-number" id="veiculosCount">48</div>
+                        <div class="stats-text">Em operação</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Condutores</h3>
+                        <div class="card-icon icon-warning">
+                            <i class="fas fa-id-card"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-number" id="condutoresCount">52</div>
+                        <div class="stats-text">Habilitados</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Operações Hoje</h3>
+                        <div class="card-icon icon-secondary">
+                            <i class="fas fa-file-invoice-dollar"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="stats-number" id="operacoesCount">127</div>
+                        <div class="stats-text">Emitidas</div>
                     </div>
                 </div>
             </div>
-
-            <!-- DASHBOARD -->
-            <div class="dashboard" id="dashboard">
-                <div class="dashboard-grid" id="dashboardGrid">
-                    <!-- Os widgets serão adicionados aqui dinamicamente -->
-                    <div class="message" id="emptyMessage">
-                        <i class="fas fa-plus-circle" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
-                        <p>Adicione seu primeiro gráfico usando a barra lateral!</p>
+            
+            <!-- Import Section -->
+            <div class="import-section">
+                <h3 class="section-title">Importação de Dados</h3>
+                <p>Importe o arquivo Excel (BD_SKU.xlsx) para atualizar as informações do sistema. O arquivo deve conter as abas e sub-abas conforme o padrão estabelecido.</p>
+                
+                <div class="import-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div>
+                        <p><strong>Importante:</strong> O arquivo Excel deve manter a estrutura original com as colunas "Aba", "Sub Aba" e "O que é / O que faz".</p>
                     </div>
                 </div>
+                
+                <div class="data-update-info">
+                    <p><strong>Última atualização:</strong> <span id="lastUpdate">Nenhuma importação realizada</span></p>
+                    <p><strong>Total de registros carregados:</strong> <span id="totalRecords">0</span></p>
+                </div>
+            </div>
+            
+            <!-- Data Table -->
+            <div class="data-section">
+                <h3 class="section-title">Funcionalidades do Sistema</h3>
+                <div class="table-container">
+                    <table id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>Aba</th>
+                                <th>Sub Aba</th>
+                                <th>Descrição / Funcionalidade</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Dados serão carregados via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Modal para Importação -->
+    <div class="modal" id="importModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Importar Arquivo Excel</h3>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Selecione o arquivo Excel (BD_SKU.xlsx) para importar os dados para o sistema.</p>
+                
+                <div style="margin: 20px 0;">
+                    <label for="fileInput" class="btn btn-secondary" style="display: inline-block;">
+                        <i class="fas fa-folder-open"></i> Escolher Arquivo
+                    </label>
+                    <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;">
+                    <span id="fileName" style="margin-left: 12px; color: var(--gray);">Nenhum arquivo selecionado</span>
+                </div>
+                
+                <div id="importPreview" class="import-preview">
+                    <!-- Pré-visualização dos dados será exibida aqui -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelImport">Cancelar</button>
+                <button class="btn btn-primary" id="confirmImport" disabled>Importar Dados</button>
             </div>
         </div>
     </div>
-
+    
     <script>
-        // VARIÁVEIS GLOBAIS
-        let currentData = null;
-        let currentColumns = [];
-        let selectedChartType = 'bar';
-        let widgetCount = 0;
-        let widgets = [];
+        // Dados iniciais baseados na imagem e Excel fornecidos
+        const initialData = [
+            { aba: "Contratante", subAba: "Dados Cadastrais", descricao: "Atualizar dados da contratante", status: "ativo" },
+            { aba: "Contratante", subAba: "Emitentes", descricao: "Lista de todos os emitentes cadastrados, permite editar e criar novos cadastros", status: "ativo" },
+            { aba: "Contratante", subAba: "Usuários", descricao: "Lista de todos os usuários cadastrados, permite editar e criar novos cadastros", status: "ativo" },
+            { aba: "Contratante", subAba: "Colaboradores", descricao: "Lista de colaboradores cadastrados, permite editar e criar novos cadastros", status: "ativo" },
+            { aba: "Contratante", subAba: "Regras de Valores", descricao: "Editar regras de valores máxi e min de pago frete e VPO", status: "ativo" },
+            { aba: "Contratante", subAba: "Regras de Parcela", descricao: "Lista de todas regras de parcela cadastradas, permite editar e criar novas", status: "ativo" },
+            { aba: "Contratante", subAba: "Modelos de Rota", descricao: "Lista de todos as rotas cadastradas, permite editar e criar novas rotas", status: "ativo" },
+            { aba: "Contratante", subAba: "Estoques de Cartões", descricao: "Define a qtd. aceitável e quantidade crítica de cartões frete em seu estoque", status: "ativo" },
+            { aba: "Contratante", subAba: "Responsabilidades", descricao: "Dispara e-mails quando determinadas situações ocorrem nos processos", status: "ativo" },
+            { aba: "Contratante", subAba: "Minha Conta Digital", descricao: "Extrato de conta digital/movimentações realizadas", status: "ativo" },
+            { aba: "Contratante", subAba: "Configurações", descricao: "Configurações do sistema", status: "ativo" },
+            { aba: "Veículos", subAba: "Veículos", descricao: "Lista de todos os veículos cadastrados, permite editar e criar novos cadastros", status: "ativo" },
+            { aba: "Condutores", subAba: "Condutores", descricao: "Permite editar e criar cadastros de novos condutores", status: "ativo" },
+            { aba: "Transportadores", subAba: "Transportadores", descricao: "Permite editar e criar cadastros de novos transportadores", status: "ativo" },
+        ];
 
-        // INICIALIZAÇÃO
+        // Variáveis globais
+        let currentData = [...initialData];
+        let fileData = null;
+
+        // Inicializar a tabela com dados iniciais
         document.addEventListener('DOMContentLoaded', function() {
-            initEventListeners();
-            makeDraggable();
+            loadDataToTable(currentData);
+            
+            // Configurar botões e eventos
+            document.getElementById('importBtn').addEventListener('click', openImportModal);
+            document.getElementById('excelFile').addEventListener('change', handleFileSelect);
+            document.getElementById('closeModal').addEventListener('click', closeImportModal);
+            document.getElementById('cancelImport').addEventListener('click', closeImportModal);
+            document.getElementById('fileInput').addEventListener('change', handleModalFileSelect);
+            document.getElementById('confirmImport').addEventListener('click', importData);
+            
+            // Fechar modal ao clicar fora
+            document.getElementById('importModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeImportModal();
+                }
+            });
         });
 
-        // CONFIGURA EVENT LISTENERS
-        function initEventListeners() {
-            // Upload de arquivo
-            document.getElementById('fileInputBtn').addEventListener('click', () => {
-                document.getElementById('fileInput').click();
+        // Carregar dados na tabela
+        function loadDataToTable(data) {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+            
+            // Contadores para estatísticas
+            let contratantesCount = 0;
+            let veiculosCount = 0;
+            let condutoresCount = 0;
+            let operacoesCount = 0;
+            
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                
+                // Contar para estatísticas
+                if (item.aba === "Contratante") contratantesCount++;
+                if (item.aba === "Veículos") veiculosCount++;
+                if (item.aba === "Condutores") condutoresCount++;
+                if (item.aba === "Emissões") operacoesCount++;
+                
+                // Determinar classe de status
+                const statusClass = item.status === 'ativo' ? 'status-active' : 'status-pending';
+                const statusText = item.status === 'ativo' ? 'Ativo' : 'Pendente';
+                
+                row.innerHTML = `
+                    <td>${item.aba}</td>
+                    <td>${item.subAba}</td>
+                    <td>${item.descricao}</td>
+                    <td><span class="status ${statusClass}">${statusText}</span></td>
+                `;
+                
+                tableBody.appendChild(row);
             });
-
-            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
             
-            // Drag and drop
-            const dropZone = document.getElementById('dropZone');
-            dropZone.addEventListener('dragover', handleDragOver);
-            dropZone.addEventListener('drop', handleDrop);
-            
-            // Botão de dados de exemplo
-            document.getElementById('sampleDataBtn').addEventListener('click', loadSampleData);
-            
-            // Botão reset
-            document.getElementById('resetBtn').addEventListener('click', resetDashboard);
-            
-            // Seleção de tipo de gráfico
-            document.querySelectorAll('.chart-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.chart-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    selectedChartType = this.dataset.type;
-                    updateConfigPanel();
-                });
-            });
-            
-            // Adicionar gráfico
-            document.getElementById('addChartBtn').addEventListener('click', addChartToDashboard);
-            
-            // Inicializa com gráfico de barras selecionado
-            document.querySelector('.chart-btn[data-type="bar"]').classList.add('active');
+            // Atualizar contadores no dashboard
+            document.getElementById('contratantesCount').textContent = contratantesCount || 12;
+            document.getElementById('veiculosCount').textContent = veiculosCount || 48;
+            document.getElementById('condutoresCount').textContent = condutoresCount || 52;
+            document.getElementById('operacoesCount').textContent = operacoesCount || 127;
+            document.getElementById('totalRecords').textContent = data.length;
         }
 
-        // MANIPULAÇÃO DE ARQUIVOS
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.dataTransfer.dropEffect = 'copy';
+        // Abrir modal de importação
+        function openImportModal() {
+            document.getElementById('importModal').style.display = 'flex';
+            document.getElementById('fileName').textContent = 'Nenhum arquivo selecionado';
+            document.getElementById('importPreview').innerHTML = '';
+            document.getElementById('confirmImport').disabled = true;
         }
 
-        function handleDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                processFile(files[0]);
+        // Fechar modal de importação
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+            fileData = null;
+        }
+
+        // Manipular seleção de arquivo no modal
+        function handleModalFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                readExcelFile(file);
             }
         }
 
+        // Manipular seleção de arquivo direto
         function handleFileSelect(e) {
             const file = e.target.files[0];
             if (file) {
-                processFile(file);
+                readExcelFile(file, true);
             }
         }
 
-        function processFile(file) {
+        // Ler arquivo Excel
+        function readExcelFile(file, directImport = false) {
             const reader = new FileReader();
             
             reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    
-                    // Pega a primeira planilha
-                    const firstSheet = workbook.SheetNames[0];
-                    const worksheet = workbook.Sheets[firstSheet];
-                    
-                    // Converte para JSON
-                    const jsonData = XLSX.utils.sheet_to_json(worksheet);
-                    
-                    // Processa os dados
-                    processData(jsonData, file.name);
-                    
-                } catch (error) {
-                    alert('Erro ao ler o arquivo: ' + error.message);
+                const data = new Uint8Array(e.target.result);
+                const workbook = XLSX.read(data, { type: 'array' });
+                
+                // Supondo que os dados estão na primeira planilha
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+                
+                // Processar os dados do Excel
+                fileData = processExcelData(jsonData);
+                
+                // Mostrar pré-visualização
+                showImportPreview(fileData);
+                
+                if (directImport) {
+                    // Importação direta
+                    importDataFromFile(fileData);
+                } else {
+                    // Habilitar botão de confirmação no modal
+                    document.getElementById('confirmImport').disabled = false;
                 }
             };
             
-            if (file.name.endsWith('.csv')) {
-                reader.readAsText(file);
-            } else {
-                reader.readAsArrayBuffer(file);
-            }
+            reader.readAsArrayBuffer(file);
         }
 
-        // PROCESSAMENTO DE DADOS
-        function processData(data, fileName) {
+        // Processar dados do Excel
+        function processExcelData(excelData) {
+            const processedData = [];
+            
+            // Ignorar cabeçalho (primeira linha)
+            for (let i = 1; i < excelData.length; i++) {
+                const row = excelData[i];
+                if (row && row.length >= 3) {
+                    processedData.push({
+                        aba: row[0] || '',
+                        subAba: row[1] || '',
+                        descricao: row[2] || ''
+                    });
+                }
+            }
+            
+            return processedData;
+        }
+
+        // Mostrar pré-visualização dos dados
+        function showImportPreview(data) {
+            const previewContainer = document.getElementById('importPreview');
+            previewContainer.innerHTML = '';
+            
             if (data.length === 0) {
-                alert('Arquivo vazio ou sem dados válidos!');
+                previewContainer.innerHTML = '<p style="color: var(--danger);">Nenhum dado válido encontrado no arquivo.</p>';
                 return;
             }
             
-            currentData = data;
-            currentColumns = Object.keys(data[0]);
+            let previewHTML = '<h4 style="margin-bottom: 12px;">Pré-visualização (primeiras 5 linhas):</h4>';
+            previewHTML += '<table style="width: 100%; border-collapse: collapse;">';
+            previewHTML += '<thead><tr><th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Aba</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Sub Aba</th><th style="padding: 8px; border: 1px solid #ddd; background-color: #f5f5f5;">Descrição</th></tr></thead>';
+            previewHTML += '<tbody>';
             
-            // Atualiza a interface
-            updateUIAfterDataLoad(fileName);
+            const limit = Math.min(data.length, 5);
+            for (let i = 0; i < limit; i++) {
+                previewHTML += `<tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${data[i].aba}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${data[i].subAba}</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">${data[i].descricao.substring(0, 80)}${data[i].descricao.length > 80 ? '...' : ''}</td>
+                </tr>`;
+            }
             
-            // Preenche os selects
-            populateColumnSelects();
+            previewHTML += '</tbody></table>';
+            previewHTML += `<p style="margin-top: 12px; font-size: 14px; color: var(--gray);">Total de registros encontrados: ${data.length}</p>`;
             
-            // Mostra preview dos dados
-            showDataPreview();
+            previewContainer.innerHTML = previewHTML;
         }
 
-        function loadSampleData() {
-            // Dados de exemplo
-            currentData = [
-                { Mês: 'Janeiro', Vendas: 12000, Lucro: 8000, Clientes: 150 },
-                { Mês: 'Fevereiro', Vendas: 19000, Lucro: 12000, Clientes: 180 },
-                { Mês: 'Março', Vendas: 15000, Lucro: 9000, Clientes: 160 },
-                { Mês: 'Abril', Vendas: 22000, Lucro: 15000, Clientes: 210 },
-                { Mês: 'Maio', Vendas: 18000, Lucro: 11000, Clientes: 190 },
-                { Mês: 'Junho', Vendas: 25000, Lucro: 17000, Clientes: 230 }
-            ];
-            
-            currentColumns = ['Mês', 'Vendas', 'Lucro', 'Clientes'];
-            
-            updateUIAfterDataLoad('Dados de Exemplo');
-            populateColumnSelects();
-            showDataPreview();
-        }
-
-        // ATUALIZAÇÃO DA INTERFACE
-        function updateUIAfterDataLoad(fileName) {
-            // Esconde área de upload
-            document.getElementById('uploadArea').style.display = 'none';
-            
-            // Mostra sidebar
-            document.getElementById('sidebar').style.display = 'block';
-            
-            // Mostra dashboard
-            document.getElementById('dashboard').classList.add('active');
-            
-            // Atualiza título
-            document.querySelector('.logo span').textContent = `Power BI Clone - ${fileName}`;
-        }
-
-        function populateColumnSelects() {
-            const xAxisSelect = document.getElementById('xAxis');
-            const yAxisSelect = document.getElementById('yAxis');
-            
-            // Limpa opções atuais
-            xAxisSelect.innerHTML = '<option value="">Selecione a coluna</option>';
-            yAxisSelect.innerHTML = '<option value="">Selecione a coluna</option>';
-            
-            // Adiciona colunas
-            currentColumns.forEach(col => {
-                xAxisSelect.innerHTML += `<option value="${col}">${col}</option>`;
-                yAxisSelect.innerHTML += `<option value="${col}">${col}</option>`;
-            });
-            
-            // Seleciona padrões
-            if (currentColumns.length >= 2) {
-                xAxisSelect.value = currentColumns[0];
-                yAxisSelect.value = currentColumns[1];
+        // Importar dados do modal
+        function importData() {
+            if (fileData && fileData.length > 0) {
+                importDataFromFile(fileData);
+                closeImportModal();
             }
         }
 
-        function updateConfigPanel() {
-            const xAxisGroup = document.getElementById('xAxis').closest('.config-group');
-            const yAxisGroup = document.getElementById('yAxis').closest('.config-group');
+        // Importar dados do arquivo
+        function importDataFromFile(data) {
+            // Atualizar os dados atuais
+            currentData = data.map(item => ({
+                ...item,
+                status: 'ativo' // Definir todos como ativos por padrão
+            }));
             
-            if (selectedChartType === 'pie' || selectedChartType === 'doughnut') {
-                xAxisGroup.querySelector('label').textContent = 'Rótulos:';
-                yAxisGroup.querySelector('label').textContent = 'Valores:';
-            } else if (selectedChartType === 'table') {
-                xAxisGroup.style.display = 'none';
-                yAxisGroup.style.display = 'none';
-            } else {
-                xAxisGroup.style.display = 'block';
-                yAxisGroup.style.display = 'block';
-                xAxisGroup.querySelector('label').textContent = 'Eixo X:';
-                yAxisGroup.querySelector('label').textContent = 'Eixo Y:';
-            }
+            // Atualizar a tabela
+            loadDataToTable(currentData);
+            
+            // Atualizar informações de última importação
+            const now = new Date();
+            const formattedDate = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth()+1).toString().padStart(2, '0')}/${now.getFullYear()} ${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+            
+            document.getElementById('lastUpdate').textContent = formattedDate;
+            document.getElementById('totalRecords').textContent = currentData.length;
+            
+            // Mostrar mensagem de sucesso
+            showNotification('Dados importados com sucesso!', 'success');
         }
 
-        function showDataPreview() {
-            const container = document.getElementById('tableContainer');
-            
-            if (!currentData || currentData.length === 0) {
-                container.innerHTML = '<p>Nenhum dado para mostrar</p>';
-                return;
-            }
-            
-            let html = '<table>';
-            
-            // Cabeçalho
-            html += '<thead><tr>';
-            currentColumns.forEach(col => {
-                html += `<th>${col}</th>`;
-            });
-            html += '</tr></thead>';
-            
-            // Dados (limita a 10 linhas)
-            html += '<tbody>';
-            currentData.slice(0, 10).forEach(row => {
-                html += '<tr>';
-                currentColumns.forEach(col => {
-                    html += `<td>${row[col] || ''}</td>`;
-                });
-                html += '</tr>';
-            });
-            html += '</tbody></table>';
-            
-            container.innerHTML = html;
-        }
-
-        // CRIAÇÃO DE GRÁFICOS
-        function addChartToDashboard() {
-            const title = document.getElementById('chartTitle').value || `Gráfico ${selectedChartType} ${widgetCount + 1}`;
-            const xAxis = document.getElementById('xAxis').value;
-            const yAxis = document.getElementById('yAxis').value;
-            const color = document.getElementById('chartColor').value;
-            
-            if ((selectedChartType !== 'table') && (!xAxis || !yAxis)) {
-                alert('Selecione os eixos X e Y!');
-                return;
-            }
-            
-            // Cria widget
-            const widgetId = `widget-${Date.now()}`;
-            const widget = createWidget(widgetId, title, selectedChartType, xAxis, yAxis, color);
-            
-            // Adiciona ao dashboard
-            const grid = document.getElementById('dashboardGrid');
-            const emptyMessage = document.getElementById('emptyMessage');
-            
-            if (emptyMessage) {
-                emptyMessage.remove();
-            }
-            
-            grid.appendChild(widget);
-            widgetCount++;
-            
-            // Renderiza o gráfico
-            renderChart(widgetId, selectedChartType, xAxis, yAxis, color);
-            
-            // Configura drag and drop
-            makeWidgetDraggable(widgetId);
-            
-            // Limpa formulário
-            document.getElementById('chartTitle').value = '';
-        }
-
-        function createWidget(id, title, type, xAxis, yAxis, color) {
-            const widget = document.createElement('div');
-            widget.className = 'widget draggable';
-            widget.id = id;
-            widget.dataset.type = type;
-            widget.dataset.xAxis = xAxis;
-            widget.dataset.yAxis = yAxis;
-            widget.dataset.color = color;
-            
-            widget.innerHTML = `
-                <div class="widget-header">
-                    <div class="widget-title">${title}</div>
-                    <div class="widget-controls">
-                        <button class="refresh-btn" title="Atualizar">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                        <button class="delete-btn" title="Remover">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
-                <div class="widget-content">
-                    <div class="chart-container">
-                        <canvas id="chart-${id}"></canvas>
-                    </div>
-                </div>
+        // Mostrar notificação
+        function showNotification(message, type = 'info') {
+            // Criar elemento de notificação
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 16px 24px;
+                border-radius: var(--border-radius);
+                background-color: ${type === 'success' ? 'var(--success)' : 'var(--primary)'};
+                color: white;
+                font-weight: 600;
+                box-shadow: var(--shadow-lg);
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
             `;
             
-            // Adiciona eventos aos botões
-            widget.querySelector('.delete-btn').addEventListener('click', function() {
-                widget.remove();
-                widgetCount--;
-                if (widgetCount === 0) {
-                    showEmptyMessage();
-                }
-            });
+            notification.textContent = message;
+            document.body.appendChild(notification);
             
-            widget.querySelector('.refresh-btn').addEventListener('click', function() {
-                renderChart(id, type, xAxis, yAxis, color);
-            });
+            // Remover após 3 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
             
-            return widget;
+            // Adicionar animações CSS se não existirem
+            if (!document.querySelector('#notificationStyles')) {
+                const style = document.createElement('style');
+                style.id = 'notificationStyles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
         }
 
-        function renderChart(widgetId, type, xAxis, yAxis, color) {
-            const canvas = document.getElementById(`chart-${widgetId}`);
-            if (!canvas) return;
-            
-            // Destroi gráfico anterior se existir
-            if (canvas.chart) {
-                canvas.chart.destroy();
-            }
-            
-            // Prepara dados
-            const labels = currentData.map(row => row[xAxis]);
-            const data = currentData.map(row => row[yAxis]);
-            
-            const ctx = canvas.getContext('2d');
-            
-            let chartConfig;
-            
-            if (type === 'table') {
-                // Cria uma tabela em vez de gráfico
-                const widgetContent = canvas.closest('.widget-content');
-                widgetContent.innerHTML = createTable(currentData.slice(0, 20));
-                return;
-            } else if (type === 'pie' || type === 'doughnut') {
-                chartConfig = {
-                    type: type,
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: data,
-                            backgroundColor: generateColors(data.length, color),
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'right'
-                            }
-                        }
-                    }
-                };
-            } else if (type === 'radar') {
-                chartConfig = {
-                    type: 'radar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: yAxis,
-                            data: data,
-                            backgroundColor: hexToRgba(color, 0.2),
-                            borderColor: color,
-                            borderWidth: 2,
-                            pointBackgroundColor: color
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false
-                    }
-                };
-            } else {
-                chartConfig = {
-                    type: type,
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: yAxis,
-                            data: data,
-                            backgroundColor: type === 'bar' ? hexToRgba(color, 0.7) : hexToRgba(color, 0.1),
-                            borderColor: color,
-                            borderWidth: 2,
-                            fill: type === 'line',
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                };
-            }
-            
-            // Cria o gráfico
-            canvas.chart = new Chart(ctx, chartConfig);
-        }
-
-        // FUNÇÕES AUXILIARES
-        function createTable(data) {
-            if (!data || data.length === 0) return '<p>Sem dados</p>';
-            
-            let html = '<div style="overflow: auto; max-height: 250px;"><table style="width: 100%;">';
-            
-            // Cabeçalho
-            html += '<thead><tr>';
-            currentColumns.forEach(col => {
-                html += `<th style="padding: 8px; background: #f5f5f5;">${col}</th>`;
-            });
-            html += '</tr></thead>';
-            
-            // Dados
-            html += '<tbody>';
-            data.forEach(row => {
-                html += '<tr>';
-                currentColumns.forEach(col => {
-                    html += `<td style="padding: 8px; border-bottom: 1px solid #ddd;">${row[col] || ''}</td>`;
+        // Adicionar funcionalidade aos itens do menu
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remover classe active de todos os itens
+                document.querySelectorAll('.menu-item').forEach(i => {
+                    i.classList.remove('active');
                 });
-                html += '</tr>';
+                
+                // Adicionar classe active ao item clicado
+                this.classList.add('active');
+                
+                // Mostrar mensagem (simulação)
+                const moduleName = this.querySelector('span').textContent;
+                showNotification(`Módulo ${moduleName} selecionado`, 'info');
             });
-            html += '</tbody></table></div>';
-            
-            return html;
-        }
-
-        function generateColors(count, baseColor) {
-            const colors = [];
-            for (let i = 0; i < count; i++) {
-                const hue = (i * 137) % 360; // Fórmula para cores diversas
-                colors.push(`hsl(${hue}, 70%, 60%)`);
-            }
-            return colors;
-        }
-
-        function hexToRgba(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-        }
-
-        // DRAG AND DROP
-        function makeDraggable() {
-            interact('.draggable').draggable({
-                listeners: {
-                    start(event) {
-                        event.target.style.zIndex = 1000;
-                    },
-                    move(event) {
-                        const target = event.target;
-                        const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-                        const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-                        
-                        target.style.transform = `translate(${x}px, ${y}px)`;
-                        target.setAttribute('data-x', x);
-                        target.setAttribute('data-y', y);
-                    },
-                    end(event) {
-                        event.target.style.zIndex = '';
-                    }
-                }
-            });
-        }
-
-        function makeWidgetDraggable(widgetId) {
-            const widget = document.getElementById(widgetId);
-            if (widget) {
-                interact(widget).draggable({
-                    listeners: {
-                        move: function(event) {
-                            const x = (parseFloat(widget.getAttribute('data-x')) || 0) + event.dx;
-                            const y = (parseFloat(widget.getAttribute('data-y')) || 0) + event.dy;
-                            
-                            widget.style.transform = `translate(${x}px, ${y}px)`;
-                            widget.setAttribute('data-x', x);
-                            widget.setAttribute('data-y', y);
-                        }
-                    }
-                });
-            }
-        }
-
-        // FUNÇÕES DE UTILIDADE
-        function showEmptyMessage() {
-            const grid = document.getElementById('dashboardGrid');
-            grid.innerHTML = `
-                <div class="message" id="emptyMessage">
-                    <i class="fas fa-plus-circle" style="font-size: 48px; color: #ccc; margin-bottom: 20px;"></i>
-                    <p>Adicione seu primeiro gráfico usando a barra lateral!</p>
-                </div>
-            `;
-        }
-
-        function resetDashboard() {
-            if (confirm('Tem certeza que deseja criar um novo dashboard? Todos os gráficos serão perdidos.')) {
-                currentData = null;
-                currentColumns = [];
-                widgetCount = 0;
-                
-                // Esconde sidebar e dashboard
-                document.getElementById('sidebar').style.display = 'none';
-                document.getElementById('dashboard').classList.remove('active');
-                
-                // Mostra área de upload
-                document.getElementById('uploadArea').style.display = 'flex';
-                
-                // Limpa dashboard
-                document.getElementById('dashboardGrid').innerHTML = '';
-                showEmptyMessage();
-                
-                // Reseta título
-                document.querySelector('.logo span').textContent = 'Power BI Clone';
-                
-                // Limpa formulário
-                document.getElementById('chartTitle').value = '';
-                document.getElementById('xAxis').innerHTML = '<option value="">Selecione a coluna</option>';
-                document.getElementById('yAxis').innerHTML = '<option value="">Selecione a coluna</option>';
-            }
-        }
-
-        // Atualiza painel de configuração ao carregar
-        updateConfigPanel();
+        });
     </script>
 </body>
 </html>
