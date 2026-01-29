@@ -113,7 +113,6 @@
             transition: all 0.3s ease;
             box-shadow: var(--shadow-lg);
             z-index: 100;
-            border-right: 3px solid var(--unique-border); /* Borda única na sidebar */
         }
 
         .logo-container {
@@ -232,12 +231,10 @@
             cursor: pointer;
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-left: 3px solid var(--unique-border); /* Borda única no seletor */
         }
 
         .product-selector:hover {
             background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
         }
 
         .current-product {
@@ -263,7 +260,7 @@
             display: none;
             position: absolute;
             background: var(--sidebar-bg);
-            border: 2px solid var(--unique-border); /* Borda única no dropdown */
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: var(--border-radius);
             margin-top: 8px;
             width: 232px;
@@ -282,12 +279,10 @@
             justify-content: space-between;
             cursor: pointer;
             transition: all 0.2s ease;
-            border-left: 3px solid transparent;
         }
 
         .product-option:hover {
             background: rgba(255, 255, 255, 0.1);
-            border-left: 3px solid var(--unique-border);
         }
 
         .product-option.active {
@@ -400,8 +395,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 32px;
-            padding-bottom: 16px;
-            border-bottom: 2px solid var(--unique-border); /* Borda única no header */
         }
 
         .header h2 {
@@ -463,7 +456,6 @@
         .btn-primary {
             background-color: var(--primary);
             color: white;
-            border: 1px solid var(--primary-dark);
         }
 
         .btn-primary:hover {
@@ -487,14 +479,12 @@
         .btn-accent {
             background-color: var(--secondary);
             color: white;
-            border: 1px solid var(--secondary-light);
         }
 
         .btn-accent:hover {
             opacity: 0.9;
             transform: translateY(-2px);
             box-shadow: var(--shadow);
-            border-color: var(--secondary);
         }
 
         .file-upload-container {
@@ -521,7 +511,8 @@
             padding: 32px;
             margin-bottom: 24px;
             border-top: 4px solid var(--secondary);
-            border: 2px solid var(--unique-border); /* Borda única no container principal */
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--unique-border); /* BORDA ÚNICA À ESQUERDA */
         }
 
         .product-badge {
@@ -533,7 +524,6 @@
             font-size: 12px;
             font-weight: 600;
             margin-bottom: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .module-title {
@@ -565,14 +555,12 @@
             border-left: 4px solid var(--secondary);
             transition: all 0.2s ease;
             border: 1px solid var(--border-color);
-            border-top: 2px solid var(--unique-border); /* Borda única nos cards */
         }
 
         .functionality-card:hover {
             background-color: var(--card-bg);
             transform: translateY(-2px);
             box-shadow: var(--shadow);
-            border-color: var(--unique-border);
         }
 
         .functionality-title {
@@ -604,7 +592,8 @@
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            border: 2px solid var(--unique-border); /* Borda única no estado vazio */
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--unique-border); /* BORDA ÚNICA À ESQUERDA */
         }
 
         .empty-state i {
@@ -632,7 +621,8 @@
             box-shadow: var(--shadow);
             padding: 24px;
             margin-bottom: 24px;
-            border: 2px solid var(--unique-border); /* Borda única na seção de info */
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--unique-border); /* BORDA ÚNICA À ESQUERDA */
         }
 
         .info-grid {
@@ -648,7 +638,6 @@
             background-color: var(--light);
             text-align: center;
             border: 1px solid var(--border-color);
-            border-top: 3px solid var(--unique-border); /* Borda única nos cards de info */
         }
 
         .info-card i {
@@ -691,7 +680,8 @@
             max-height: 80vh;
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
-            border: 2px solid var(--unique-border); /* Borda única nos modais */
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--unique-border); /* BORDA ÚNICA NO TOPO */
         }
 
         .modal-header {
@@ -744,7 +734,7 @@
             animation: slideIn 0.3s ease;
             display: none;
             background-color: var(--secondary);
-            border-left: 4px solid var(--unique-border); /* Borda única nas notificações */
+            border-left: 4px solid var(--unique-border); /* BORDA ÚNICA À ESQUERDA */
         }
 
         @keyframes slideIn {
@@ -769,8 +759,6 @@
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 16px;
-                border-right: none;
-                border-bottom: 3px solid var(--unique-border); /* Borda única na parte inferior no mobile */
             }
             
             .logo-container, .user-info, .theme-toggle-container, .product-selector {
@@ -788,8 +776,6 @@
                 flex-direction: column;
                 gap: 16px;
                 align-items: flex-start;
-                padding-bottom: 16px;
-                border-bottom: 2px solid var(--unique-border); /* Mantém borda no header mobile */
             }
             
             .header-actions {
@@ -964,10 +950,10 @@
                 <div style="background-color: var(--light); padding: 16px; border-radius: var(--border-radius); margin-top: 20px; border: 1px solid var(--border-color);">
                     <h4 style="margin-bottom: 8px; color: var(--primary);">Produtos Suportados:</h4>
                     <div style="display: flex; gap: 12px; margin-top: 12px;">
-                        <div style="padding: 8px 12px; background-color: #0E2841; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #FF0909;">
+                        <div style="padding: 8px 12px; background-color: #0E2841; color: white; border-radius: 6px; font-size: 12px;">
                             NDD CARGO
                         </div>
-                        <div style="padding: 8px 12px; background-color: #383838; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #0AFE56;">
+                        <div style="padding: 8px 12px; background-color: #383838; color: white; border-radius: 6px; font-size: 12px;">
                             NDD MOVE
                         </div>
                     </div>
@@ -991,7 +977,7 @@
                 <p>Gerencie seus dados do sistema:</p>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0;">
-                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius); text-align: center; border: 1px solid var(--border-color); border-top: 3px solid var(--unique-border);">
+                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius); text-align: center; border: 1px solid var(--border-color);">
                         <i class="fas fa-file-export" style="font-size: 32px; color: var(--primary); margin-bottom: 12px;"></i>
                         <h4 style="margin-bottom: 8px;">Exportar</h4>
                         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Salve backup em JSON</p>
@@ -1000,7 +986,7 @@
                         </button>
                     </div>
                     
-                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius); text-align: center; border: 1px solid var(--border-color); border-top: 3px solid var(--unique-border);">
+                    <div style="background: var(--light); padding: 20px; border-radius: var(--border-radius); text-align: center; border: 1px solid var(--border-color);">
                         <i class="fas fa-file-import" style="font-size: 32px; color: var(--primary); margin-bottom: 12px;"></i>
                         <h4 style="margin-bottom: 8px;">Importar</h4>
                         <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Carregue backup anterior</p>
@@ -1010,7 +996,7 @@
                     </div>
                 </div>
                 
-                <div style="background-color: var(--light); padding: 16px; border-radius: var(--border-radius); font-size: 14px; border: 1px solid var(--border-color); border-left: 4px solid var(--unique-border);">
+                <div style="background-color: var(--light); padding: 16px; border-radius: var(--border-radius); font-size: 14px; border: 1px solid var(--border-color);">
                     <div style="margin-bottom: 8px;"><strong>Produto Atual:</strong> <span id="backupProductName">NDD CARGO</span></div>
                     <div style="margin-bottom: 8px;"><strong>Módulos Carregados:</strong> <span id="backupModulesCount">0</span></div>
                     <div><strong>Última Atualização:</strong> <span id="backupLastUpdate">Nunca</span></div>
