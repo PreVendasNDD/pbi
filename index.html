@@ -1266,20 +1266,7 @@
             // Mostrar/esconder conteúdo baseado nos dados
             const emptyState = document.getElementById('emptyState');
             const moduleContent = document.getElementById('moduleContent');
-            const infoSection = document.getElementById('infoSection');
             
-            const currentProductData = systemData.products[systemData.currentProduct];
-            const hasData = currentProductData && currentProductData.modules.length > 0;
-            
-            if (hasData) {
-                emptyState.style.display = 'none';
-                moduleContent.style.display = 'block';
-                infoSection.style.display = 'block';
-            } else {
-                emptyState.style.display = 'block';
-                moduleContent.style.display = 'none';
-                infoSection.style.display = 'none';
-            }
         }
         
         // Atualizar seletor de produto
