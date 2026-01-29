@@ -83,6 +83,54 @@
             --sidebar-bg: linear-gradient(180deg, #383838 0%, #2a2a2a 100%);
         }
 
+        .theme-ndd-elog {
+            --primary: #0E2841;
+            --primary-light: #1e3a5f;
+            --primary-dark: #091b2e;
+            --secondary: #CBC7EB;
+            --secondary-light: #e0ddf4;
+            --sidebar-bg: linear-gradient(180deg, #0E2841 0%, #091b2e 100%);
+            --logo-gradient: linear-gradient(90deg, #0E2841, #CBC7EB);
+            --unique-border: #CBC7EB; /* Borda azul acinzentado único para NDD ELOG */
+        }
+
+        /* Ajuste do sidebar no modo escuro para NDD ELOG */
+        .dark-mode.theme-ndd-elog {
+            --sidebar-bg: linear-gradient(180deg, #0E2841 0%, #091b2e 100%);
+        }
+
+        .theme-ndd-emite-facil {
+            --primary: #C0C0C0;
+            --primary-light: #d5d5d5;
+            --primary-dark: #a5a5a5;
+            --secondary: #FFFFFF;
+            --secondary-light: #f8f9fa;
+            --sidebar-bg: linear-gradient(180deg, #C0C0C0 0%, #a5a5a5 100%);
+            --logo-gradient: linear-gradient(90deg, #C0C0C0, #FFFFFF);
+            --unique-border: #FFFFFF; /* Borda branca única para NDD EMITE FÁCIL */
+        }
+
+        /* Ajuste do sidebar no modo escuro para NDD EMITE FÁCIL */
+        .dark-mode.theme-ndd-emite-facil {
+            --sidebar-bg: linear-gradient(180deg, #C0C0C0 0%, #a5a5a5 100%);
+        }
+
+        .theme-ndd-frete-minimo {
+            --primary: #C0C0C0;
+            --primary-light: #d5d5d5;
+            --primary-dark: #a5a5a5;
+            --secondary: #FFFFFF;
+            --secondary-light: #f8f9fa;
+            --sidebar-bg: linear-gradient(180deg, #C0C0C0 0%, #a5a5a5 100%);
+            --logo-gradient: linear-gradient(90deg, #C0C0C0, #FFFFFF);
+            --unique-border: #FFFFFF; /* Borda branca única para NDD FRETE MÍNIMO */
+        }
+
+        /* Ajuste do sidebar no modo escuro para NDD FRETE MÍNIMO */
+        .dark-mode.theme-ndd-frete-minimo {
+            --sidebar-bg: linear-gradient(180deg, #C0C0C0 0%, #a5a5a5 100%);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -1003,12 +1051,21 @@
                 
                 <div style="background-color: var(--light); padding: 16px; border-radius: var(--border-radius); margin-top: 20px; border: 1px solid var(--border-color);">
                     <h4 style="margin-bottom: 8px; color: var(--primary);">Produtos Suportados:</h4>
-                    <div style="display: flex; gap: 12px; margin-top: 12px;">
-                        <div style="padding: 8px 12px; background-color: #0E2841; color: white; border-radius: 6px; font-size: 12px;">
+                    <div style="display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap;">
+                        <div style="padding: 8px 12px; background-color: #0E2841; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #FF0909;">
                             NDD CARGO
                         </div>
-                        <div style="padding: 8px 12px; background-color: #383838; color: white; border-radius: 6px; font-size: 12px;">
+                        <div style="padding: 8px 12px; background-color: #383838; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #0AFE56;">
                             NDD MOVE
+                        </div>
+                        <div style="padding: 8px 12px; background-color: #0E2841; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #CBC7EB;">
+                            NDD ELOG
+                        </div>
+                        <div style="padding: 8px 12px; background-color: #C0C0C0; color: #333; border-radius: 6px; font-size: 12px; border: 1px solid #FFFFFF;">
+                            NDD EMITE FÁCIL
+                        </div>
+                        <div style="padding: 8px 12px; background-color: #C0C0C0; color: #333; border-radius: 6px; font-size: 12px; border: 1px solid #FFFFFF;">
+                            NDD FRETE MÍNIMO
                         </div>
                     </div>
                 </div>
@@ -1145,6 +1202,104 @@
                         name: 'Dash ESG',
                         url: 'https://www.figma.com/proto/tYe7lTBhnQvMWCMBEeSCM9/Dashboard?page-id=0%3A1&type=design&node-id=1315-18538&viewport=585%2C3526%2C0.08&t=7WiAalvHtsTgc96H-9&scaling=scale-down&starting-point-node-id=1315%3A18538',
                         icon: 'fas fa-chart-bar'
+                    }
+                ]
+            },
+            'NDD ELOG': {
+                name: 'NDD ELOG',
+                theme: 'theme-ndd-elog',
+                colors: {
+                    primary: '#0E2841',
+                    secondary: '#CBC7EB',
+                    white: '#FFFFFF',
+                    uniqueBorder: '#CBC7EB'
+                },
+                icon: 'fas fa-file-contract',
+                links: [
+                    {
+                        name: 'Portal',
+                        url: 'https://portal.stg.nddelog.com/',
+                        icon: 'fas fa-door-open'
+                    },
+                    {
+                        name: 'Apresentação',
+                        url: 'https://nddsa-my.sharepoint.com/:p:/g/personal/william_souza_ndd_tech/IQBANcgk5Q7bRo82jQVx9LYQAed9VrNjSJMmtKIfj3xXYTw?e=qRM1Gh',
+                        icon: 'fas fa-presentation'
+                    },
+                    {
+                        name: 'Help Center',
+                        url: 'https://helpcenter.nddelog.com/?l=pt',
+                        icon: 'fas fa-question-circle'
+                    },
+                    {
+                        name: 'API',
+                        url: 'https://developer.nddelog.com/',
+                        icon: 'fas fa-code'
+                    }
+                ]
+            },
+            'NDD EMITE FÁCIL': {
+                name: 'NDD EMITE FÁCIL',
+                theme: 'theme-ndd-emite-facil',
+                colors: {
+                    primary: '#C0C0C0',
+                    secondary: '#FFFFFF',
+                    white: '#FFFFFF',
+                    uniqueBorder: '#FFFFFF'
+                },
+                icon: 'fas fa-file-invoice',
+                links: [
+                    {
+                        name: 'Portal',
+                        url: 'https://emissorcte.nddcargo.com.br/home',
+                        icon: 'fas fa-door-open'
+                    },
+                    {
+                        name: 'Apresentação',
+                        url: 'https://nddsa-my.sharepoint.com/:p:/g/personal/joao_pinheiro_ndd_tech/IQD0b_x9FFP2SoodIZWvb9_FATspUKLvHo8q_1aOp-8T7zQ?e=n9b2aK',
+                        icon: 'fas fa-presentation'
+                    },
+                    {
+                        name: 'Help Center',
+                        url: '#',
+                        icon: 'fas fa-question-circle',
+                        disabled: true
+                    },
+                    {
+                        name: 'API',
+                        url: '#',
+                        icon: 'fas fa-code',
+                        disabled: true
+                    }
+                ]
+            },
+            'NDD FRETE MÍNIMO': {
+                name: 'NDD FRETE MÍNIMO',
+                theme: 'theme-ndd-frete-minimo',
+                colors: {
+                    primary: '#C0C0C0',
+                    secondary: '#FFFFFF',
+                    white: '#FFFFFF',
+                    uniqueBorder: '#FFFFFF'
+                },
+                icon: 'fas fa-money-bill-wave',
+                links: [
+                    {
+                        name: 'Portal',
+                        url: '#',
+                        icon: 'fas fa-door-open',
+                        disabled: true
+                    },
+                    {
+                        name: 'Apresentação',
+                        url: 'https://nddsa-my.sharepoint.com/:p:/g/personal/joao_pinheiro_ndd_tech/IQCPI7ShVnDhSa1D0UthCbRCAZY2HjeLSMEL-WrpDtM6flY?e=P5Fzt9',
+                        icon: 'fas fa-presentation'
+                    },
+                    {
+                        name: 'API',
+                        url: '#',
+                        icon: 'fas fa-code',
+                        disabled: true
                     }
                 ]
             }
@@ -1315,7 +1470,7 @@
             const themeClass = PRODUCT_THEMES[productName] ? PRODUCT_THEMES[productName].theme : 'theme-ndd-cargo';
             
             // Remover todos os temas
-            document.body.classList.remove('theme-ndd-cargo', 'theme-ndd-move');
+            document.body.classList.remove('theme-ndd-cargo', 'theme-ndd-move', 'theme-ndd-elog', 'theme-ndd-emite-facil', 'theme-ndd-frete-minimo');
             // Aplicar novo tema
             document.body.classList.add(themeClass);
             
@@ -1579,9 +1734,18 @@
                 productLinks.forEach(link => {
                     const linkCard = document.createElement('a');
                     linkCard.className = 'link-card';
-                    linkCard.href = link.url;
-                    linkCard.target = '_blank';
-                    linkCard.rel = 'noopener noreferrer';
+                    
+                    if (link.disabled) {
+                        linkCard.classList.add('disabled');
+                        linkCard.style.opacity = '0.6';
+                        linkCard.style.cursor = 'not-allowed';
+                        linkCard.style.pointerEvents = 'none';
+                        linkCard.title = 'Link não disponível';
+                    } else {
+                        linkCard.href = link.url;
+                        linkCard.target = '_blank';
+                        linkCard.rel = 'noopener noreferrer';
+                    }
                     
                     linkCard.innerHTML = `
                         <i class="${link.icon}"></i>
