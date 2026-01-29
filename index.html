@@ -614,6 +614,70 @@
             margin-bottom: 24px;
         }
 
+        /* Seção de Links por Produto */
+        .links-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--unique-border);
+        }
+
+        .links-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .links-section h3 i {
+            color: var(--secondary);
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            color: var(--text-color);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .link-card:hover {
+            background-color: var(--card-bg);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+            border-color: var(--unique-border);
+        }
+
+        .link-card i {
+            font-size: 28px;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .link-card span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
         /* Seção de informações */
         .info-section {
             background-color: var(--card-bg);
@@ -622,7 +686,6 @@
             padding: 24px;
             margin-bottom: 24px;
             border: 1px solid var(--border-color);
-            border-left: 4px solid var(--unique-border); /* BORDA ÚNICA À ESQUERDA */
         }
 
         .info-grid {
@@ -786,12 +849,22 @@
                 grid-template-columns: 1fr;
             }
             
+            .links-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
             .info-grid {
                 grid-template-columns: 1fr;
             }
             
             .theme-toggle-header {
                 display: flex !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .links-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -873,30 +946,11 @@
                 </div>
             </div>
             
-            <!-- Informações do Sistema -->
-            <div class="info-section" id="infoSection" style="display: none;">
-                <h3 style="margin-bottom: 16px; color: var(--primary);">Resumo do Sistema</h3>
-                <div class="info-grid">
-                    <div class="info-card">
-                        <i class="fas fa-cube"></i>
-                        <h4>Produtos</h4>
-                        <div class="value" id="totalProducts">0</div>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-folder"></i>
-                        <h4>Módulos Totais</h4>
-                        <div class="value" id="totalModules">0</div>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-cogs"></i>
-                        <h4>Funcionalidades</h4>
-                        <div class="value" id="totalFunctionalities">0</div>
-                    </div>
-                    <div class="info-card">
-                        <i class="fas fa-sync-alt"></i>
-                        <h4>Última Atualização</h4>
-                        <div class="value" id="lastUpdateTime">--:--</div>
-                    </div>
+            <!-- Painel de Links por Produto -->
+            <div class="links-section" id="linksSection" style="display: none;">
+                <h3><i class="fas fa-external-link-alt"></i> Links Úteis - <span id="linksProductName">NDD CARGO</span></h3>
+                <div class="links-grid" id="linksGrid">
+                    <!-- Links serão gerados dinamicamente conforme o produto -->
                 </div>
             </div>
             
@@ -1025,9 +1079,31 @@
                     primary: '#0E2841',
                     secondary: '#FF0909',
                     white: '#FFFFFF',
-                    uniqueBorder: '#FF0909' // Vermelho para NDD CARGO
+                    uniqueBorder: '#FF0909'
                 },
-                icon: 'fas fa-shipping-fast'
+                icon: 'fas fa-shipping-fast',
+                links: [
+                    {
+                        name: 'Portal',
+                        url: 'https://web.nddcargo.com.br/portalcontratante/#/login',
+                        icon: 'fas fa-door-open'
+                    },
+                    {
+                        name: 'Apresentação',
+                        url: 'https://nddsa-my.sharepoint.com/:p:/g/personal/william_souza_ndd_tech/IQCjBUPyAANTQJBWmGO01vOvAShnsexDlLRKCf8lEDVkuV4?e=n4Id12',
+                        icon: 'fas fa-presentation'
+                    },
+                    {
+                        name: 'Help Center',
+                        url: 'https://helpcenter-nddcargo.ndd.tech/?l=pt',
+                        icon: 'fas fa-question-circle'
+                    },
+                    {
+                        name: 'API Cargo',
+                        url: 'https://nddtech.notion.site/Nova-API-NDD-Cargo-1d81d5158ce680b4966dfcc02f1bffdf',
+                        icon: 'fas fa-code'
+                    }
+                ]
             },
             'NDD MOVE': {
                 name: 'NDD MOVE',
@@ -1036,9 +1112,41 @@
                     primary: '#383838',
                     secondary: '#0AFE56',
                     white: '#FFFFFF',
-                    uniqueBorder: '#0AFE56' // Verde para NDD MOVE
+                    uniqueBorder: '#0AFE56'
                 },
-                icon: 'fas fa-truck-moving'
+                icon: 'fas fa-truck-moving',
+                links: [
+                    {
+                        name: 'Portal',
+                        url: 'https://icomprova.nddcargo.com.br/core/dashboard',
+                        icon: 'fas fa-door-open'
+                    },
+                    {
+                        name: 'Apresentação',
+                        url: 'https://nddsa-my.sharepoint.com/:p:/g/personal/joao_pinheiro_ndd_tech/IQAQ3h2UOKYZQIACS9slbg2YAazEoQ1DaSuyVLGr5FhUR3w?e=bthq2d',
+                        icon: 'fas fa-presentation'
+                    },
+                    {
+                        name: 'Help Center',
+                        url: 'https://helpcenter-nddmove.ndd.tech/',
+                        icon: 'fas fa-question-circle'
+                    },
+                    {
+                        name: 'Xml Editor',
+                        url: 'https://prevendasndd.github.io/XmlEditor/',
+                        icon: 'fas fa-edit'
+                    },
+                    {
+                        name: 'Dash Move',
+                        url: 'https://app.powerbi.com/view?r=eyJrIjoiYWJiOGU4OTktNzJjZS00NGIxLTg5ZTctOWQ2YWQ4ZjQxZjBlIiwidCI6IjcxNzE0NGQyLTZkOWYtNDJhMS1iNTZkLTQyYWZjMzc1M2VjMyJ9',
+                        icon: 'fas fa-chart-line'
+                    },
+                    {
+                        name: 'Dash ESG',
+                        url: 'https://www.figma.com/proto/tYe7lTBhnQvMWCMBEeSCM9/Dashboard?page-id=0%3A1&type=design&node-id=1315-18538&viewport=585%2C3526%2C0.08&t=7WiAalvHtsTgc96H-9&scaling=scale-down&starting-point-node-id=1315%3A18538',
+                        icon: 'fas fa-chart-bar'
+                    }
+                ]
             }
         };
         
@@ -1298,12 +1406,12 @@
             updateProductSelector();
             updateMenu();
             updateModuleContent();
-            updateSystemInfo();
+            updateLinksSection();
             
             // Mostrar/esconder conteúdo baseado nos dados
             const emptyState = document.getElementById('emptyState');
             const moduleContent = document.getElementById('moduleContent');
-            const infoSection = document.getElementById('infoSection');
+            const linksSection = document.getElementById('linksSection');
             
             const currentProductData = systemData.products[systemData.currentProduct];
             const hasData = currentProductData && currentProductData.modules.length > 0;
@@ -1311,11 +1419,11 @@
             if (hasData) {
                 emptyState.style.display = 'none';
                 moduleContent.style.display = 'block';
-                infoSection.style.display = 'block';
+                linksSection.style.display = 'block';
             } else {
                 emptyState.style.display = 'block';
                 moduleContent.style.display = 'none';
-                infoSection.style.display = 'none';
+                linksSection.style.display = 'none';
             }
         }
         
@@ -1455,44 +1563,33 @@
             }
         }
         
-        // Atualizar informações do sistema
-        function updateSystemInfo() {
-            const productNames = Object.keys(systemData.products);
+        // Atualizar seção de links
+        function updateLinksSection() {
+            const currentProduct = systemData.currentProduct;
+            const productLinks = PRODUCT_THEMES[currentProduct] ? PRODUCT_THEMES[currentProduct].links : [];
             
-            // Calcular totais
-            let totalModules = 0;
-            let totalFunctionalities = 0;
+            // Atualizar nome do produto na seção
+            document.getElementById('linksProductName').textContent = currentProduct;
             
-            productNames.forEach(productName => {
-                const productData = systemData.products[productName];
-                if (productData) {
-                    totalModules += productData.modules.length;
-                    productData.modules.forEach(module => {
-                        totalFunctionalities += module.functionalities.length;
-                    });
-                }
-            });
+            // Atualizar grid de links
+            const linksGrid = document.getElementById('linksGrid');
+            linksGrid.innerHTML = '';
             
-            // Atualizar contadores
-            document.getElementById('totalProducts').textContent = productNames.length;
-            document.getElementById('totalModules').textContent = totalModules;
-            document.getElementById('totalFunctionalities').textContent = totalFunctionalities;
-            
-            // Atualizar backup info
-            document.getElementById('backupProductName').textContent = systemData.currentProduct;
-            
-            const currentProductData = systemData.products[systemData.currentProduct];
-            const moduleCount = currentProductData ? currentProductData.modules.length : 0;
-            document.getElementById('backupModulesCount').textContent = moduleCount;
-            
-            // Atualizar data
-            if (systemData.lastUpdate) {
-                const date = new Date(systemData.lastUpdate);
-                const time = `${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-                
-                document.getElementById('lastUpdateTime').textContent = time;
-                document.getElementById('backupLastUpdate').textContent = `${formattedDate} ${time}`;
+            if (productLinks.length > 0) {
+                productLinks.forEach(link => {
+                    const linkCard = document.createElement('a');
+                    linkCard.className = 'link-card';
+                    linkCard.href = link.url;
+                    linkCard.target = '_blank';
+                    linkCard.rel = 'noopener noreferrer';
+                    
+                    linkCard.innerHTML = `
+                        <i class="${link.icon}"></i>
+                        <span>${link.name}</span>
+                    `;
+                    
+                    linksGrid.appendChild(linkCard);
+                });
             }
         }
         
