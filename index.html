@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NDD CARGO | Sistema de Gestão de Transportes</title>
+    <title>NDD CARGO | Sistema de Gestão</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <style>
         :root {
             --primary: #1a56db;
+            --primary-light: #e1effe;
             --primary-dark: #1e429f;
             --secondary: #7e3af2;
             --success: #0e9f6e;
@@ -19,9 +20,9 @@
             --dark: #1f2a37;
             --gray: #6b7280;
             --gray-light: #e5e7eb;
-            --border-radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --border-radius: 8px;
+            --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         * {
@@ -42,22 +43,20 @@
             min-height: 100vh;
         }
 
-        /* Sidebar */
+        /* Sidebar Minimalista */
         .sidebar {
-            width: 280px;
-            background: linear-gradient(180deg, #1f2a37 0%, #111827 100%);
-            color: white;
+            width: 260px;
+            background: white;
             padding: 24px 0;
             display: flex;
             flex-direction: column;
-            transition: all 0.3s ease;
-            box-shadow: var(--shadow-lg);
-            z-index: 100;
+            border-right: 1px solid var(--gray-light);
+            box-shadow: var(--shadow);
         }
 
         .logo-container {
-            padding: 0 24px 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0 24px 24px;
+            border-bottom: 1px solid var(--gray-light);
             margin-bottom: 24px;
         }
 
@@ -68,62 +67,64 @@
         }
 
         .logo i {
-            font-size: 28px;
+            font-size: 24px;
             color: var(--primary);
         }
 
         .logo h1 {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
-            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            color: var(--dark);
         }
 
         .menu-section {
-            margin-bottom: 24px;
+            margin-bottom: 16px;
         }
 
         .menu-title {
-            font-size: 12px;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            color: rgba(255, 255, 255, 0.5);
+            color: var(--gray);
             padding: 0 24px;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .menu-item {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 24px;
-            color: rgba(255, 255, 255, 0.8);
+            padding: 12px 24px;
+            color: var(--gray);
             text-decoration: none;
             transition: all 0.2s ease;
-            border-left: 3px solid transparent;
             cursor: pointer;
+            font-size: 14px;
+            border-left: 3px solid transparent;
         }
 
-        .menu-item:hover, .menu-item.active {
-            background-color: rgba(255, 255, 255, 0.05);
-            color: white;
+        .menu-item:hover {
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .menu-item.active {
+            background-color: var(--primary-light);
+            color: var(--primary);
             border-left: 3px solid var(--primary);
+            font-weight: 500;
         }
 
         .menu-item i {
-            width: 20px;
+            width: 18px;
             text-align: center;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .sub-menu {
             display: none;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-left: 3px solid var(--primary);
             margin-left: 24px;
-            border-radius: 0 0 8px 8px;
         }
 
         .sub-menu.active {
@@ -131,53 +132,48 @@
         }
 
         .sub-item {
-            padding: 10px 24px 10px 36px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 14px;
+            padding: 8px 24px 8px 36px;
+            color: var(--gray);
+            font-size: 13px;
             transition: all 0.2s ease;
             cursor: pointer;
+            border-left: 2px solid transparent;
         }
 
         .sub-item:hover {
-            color: white;
-            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--primary);
+            background-color: var(--primary-light);
+            border-left: 2px solid var(--primary);
         }
 
         .user-info {
             margin-top: auto;
-            padding: 20px 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px 24px;
+            border-top: 1px solid var(--gray-light);
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 600;
-        }
-
-        .user-details h4 {
+            color: white;
             font-size: 14px;
-            font-weight: 600;
-        }
-
-        .user-details p {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
         }
 
         /* Main Content */
         .main-content {
             flex: 1;
-            padding: 24px;
+            padding: 32px;
             overflow-y: auto;
+            background-color: #f8fafc;
         }
 
         .header {
@@ -187,272 +183,190 @@
             margin-bottom: 32px;
         }
 
-        .header h2 {
-            font-size: 28px;
+        .header-left h1 {
+            font-size: 24px;
             font-weight: 700;
             color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .header-left p {
+            font-size: 14px;
+            color: var(--gray);
         }
 
         .header-actions {
             display: flex;
             gap: 12px;
-            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 10px 16px;
             border-radius: var(--border-radius);
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             transition: all 0.2s ease;
-            border: none;
-            font-size: 14px;
-            white-space: nowrap;
-        }
-
-        .btn-sm {
-            padding: 8px 16px;
+            border: 1px solid var(--gray-light);
             font-size: 13px;
+            background: white;
         }
 
         .btn-primary {
             background-color: var(--primary);
             color: white;
+            border-color: var(--primary);
         }
 
         .btn-primary:hover {
             background-color: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
         }
 
         .btn-secondary {
             background-color: white;
-            color: var(--primary);
-            border: 1px solid var(--gray-light);
+            color: var(--gray);
         }
 
         .btn-secondary:hover {
             background-color: var(--light);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
         }
 
-        .btn-success {
-            background-color: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-warning {
-            background-color: var(--warning);
-            color: var(--dark);
-        }
-
-        .btn-warning:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .file-upload-container {
-            position: relative;
-            overflow: hidden;
-            display: inline-block;
-        }
-
-        .file-upload-container input[type=file] {
-            position: absolute;
-            left: 0;
-            top: 0;
-            opacity: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        /* Tabs Navigation */
-        .tabs-container {
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            margin-bottom: 32px;
-            overflow: hidden;
-        }
-
-        .tabs-header {
-            display: flex;
-            border-bottom: 1px solid var(--gray-light);
-            background-color: #f9fafb;
-            overflow-x: auto;
-        }
-
-        .tab-btn {
-            padding: 16px 24px;
-            background: none;
-            border: none;
-            font-weight: 600;
-            color: var(--gray);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-            border-bottom: 3px solid transparent;
-        }
-
-        .tab-btn:hover {
-            color: var(--primary);
-            background-color: rgba(26, 86, 219, 0.05);
-        }
-
-        .tab-btn.active {
-            color: var(--primary);
-            border-bottom: 3px solid var(--primary);
-            background-color: white;
-        }
-
-        /* Content Area */
-        .content-area {
-            padding: 32px;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--dark);
-        }
-
-        .module-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .module-card {
-            background-color: #f9fafb;
+        /* Module Header */
+        .module-header {
+            background: white;
             border-radius: var(--border-radius);
             padding: 24px;
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .module-card:hover {
-            transform: translateY(-3px);
+            margin-bottom: 24px;
             box-shadow: var(--shadow);
-            background-color: white;
+            border-left: 4px solid var(--primary);
         }
 
-        .module-card h3 {
+        .module-header h2 {
             font-size: 18px;
             font-weight: 600;
             color: var(--dark);
+            margin-bottom: 8px;
+        }
+
+        .module-header p {
+            font-size: 14px;
+            color: var(--gray);
+            max-width: 800px;
+        }
+
+        /* Functionality Grid - Layout Clean */
+        .functionality-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 16px;
+        }
+
+        .functionality-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+            border-top: 3px solid var(--primary);
+        }
+
+        .functionality-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
             margin-bottom: 12px;
         }
 
-        .module-card p {
-            font-size: 14px;
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .card-subtitle {
+            font-size: 13px;
+            color: var(--gray);
+            font-weight: 500;
+        }
+
+        .card-content {
+            font-size: 13px;
             color: var(--gray);
             line-height: 1.5;
         }
 
-        .module-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: var(--gray-light);
             margin-bottom: 16px;
-            background-color: rgba(26, 86, 219, 0.1);
-            color: var(--primary);
+        }
+
+        .empty-state h3 {
+            font-size: 16px;
+            color: var(--gray);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 20px;
         }
 
         /* Import Section */
         .import-section {
-            background-color: white;
+            background: white;
             border-radius: var(--border-radius);
+            padding: 24px;
+            margin-bottom: 24px;
             box-shadow: var(--shadow);
-            padding: 32px;
-            margin-bottom: 40px;
         }
 
         .import-info {
             display: flex;
             align-items: center;
-            gap: 16px;
-            background-color: #f0f9ff;
-            padding: 20px;
+            gap: 12px;
+            background-color: var(--primary-light);
+            padding: 16px;
             border-radius: var(--border-radius);
-            margin-top: 20px;
-            border-left: 4px solid var(--primary);
+            margin-top: 16px;
         }
 
         .import-info i {
-            font-size: 24px;
             color: var(--primary);
-        }
-
-        .data-update-info {
-            background-color: #f8fafc;
-            padding: 16px;
-            border-radius: var(--border-radius);
-            margin-top: 20px;
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        .data-update-info strong {
-            color: var(--dark);
-        }
-
-        /* Backup Section */
-        .backup-section {
-            background-color: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            padding: 24px;
-            margin-top: 20px;
-            border-left: 4px solid var(--warning);
-        }
-
-        .backup-section h3 {
-            font-size: 18px;
-            margin-bottom: 16px;
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .backup-options {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 16px;
         }
 
         /* Modal */
@@ -476,11 +390,11 @@
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
         .modal-header {
-            padding: 24px;
+            padding: 20px;
             border-bottom: 1px solid var(--gray-light);
             display: flex;
             justify-content: space-between;
@@ -488,119 +402,35 @@
         }
 
         .modal-title {
-            font-size: 20px;
-            font-weight: 700;
+            font-size: 16px;
+            font-weight: 600;
             color: var(--dark);
         }
 
         .modal-close {
             background: none;
             border: none;
-            font-size: 24px;
+            font-size: 20px;
             cursor: pointer;
             color: var(--gray);
         }
 
         .modal-body {
-            padding: 24px;
+            padding: 20px;
         }
 
         .modal-footer {
-            padding: 24px;
+            padding: 20px;
             border-top: 1px solid var(--gray-light);
             display: flex;
             justify-content: flex-end;
             gap: 12px;
         }
 
-        .modal-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 20px;
-        }
-
-        .modal-option {
-            background-color: #f9fafb;
-            padding: 20px;
-            border-radius: var(--border-radius);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-        }
-
-        .modal-option:hover {
-            background-color: white;
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: var(--shadow);
-        }
-
-        .modal-option i {
-            font-size: 32px;
-            margin-bottom: 12px;
-            color: var(--primary);
-        }
-
-        .import-preview {
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 16px 24px;
-            border-radius: var(--border-radius);
-            color: white;
-            font-weight: 600;
-            box-shadow: var(--shadow-lg);
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-            display: none;
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideOut {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-
         /* Responsive */
         @media (max-width: 1024px) {
-            .sidebar {
-                width: 80px;
-                overflow: hidden;
-            }
-            
-            .logo h1, .menu-title, .user-details, .menu-item span, .sub-item {
-                display: none;
-            }
-            
-            .menu-item {
-                justify-content: center;
-                padding: 16px;
-            }
-            
-            .user-info {
-                justify-content: center;
-                padding: 16px;
-            }
-            
-            .sub-menu {
-                margin-left: 0;
-                position: absolute;
-                left: 80px;
-                width: 200px;
-                z-index: 1000;
+            .functionality-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             }
         }
 
@@ -627,29 +457,57 @@
                 display: none;
             }
             
+            .functionality-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .header {
                 flex-direction: column;
-                gap: 16px;
                 align-items: flex-start;
+                gap: 16px;
             }
             
             .header-actions {
                 width: 100%;
             }
             
-            .module-grid {
-                grid-template-columns: 1fr;
+            .btn {
+                flex: 1;
+                justify-content: center;
             }
-            
-            .modal-grid {
-                grid-template-columns: 1fr;
-            }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            background-color: var(--success);
+            color: white;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: var(--shadow-hover);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            display: none;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
+        <!-- Sidebar Clean -->
         <aside class="sidebar">
             <div class="logo-container">
                 <div class="logo">
@@ -659,17 +517,17 @@
             </div>
             
             <div class="menu-section">
-                <div class="menu-title">Módulos do Sistema</div>
+                <div class="menu-title">Módulos</div>
                 <div id="menuItems">
-                    <!-- Menu será populado automaticamente -->
+                    <!-- Menu será gerado dinamicamente -->
                 </div>
             </div>
             
             <div class="user-info">
                 <div class="user-avatar">AD</div>
-                <div class="user-details">
-                    <h4>Admin Usuário</h4>
-                    <p>Administrador do Sistema</p>
+                <div>
+                    <div style="font-size: 13px; font-weight: 500;">Admin Usuário</div>
+                    <div style="font-size: 11px; color: var(--gray);">Administrador</div>
                 </div>
             </div>
         </aside>
@@ -678,163 +536,108 @@
         <main class="main-content">
             <!-- Header -->
             <div class="header">
-                <h2 id="pageTitle">Dashboard do Sistema</h2>
+                <div class="header-left">
+                    <h1 id="pageTitle">Selecione um módulo</h1>
+                    <p id="pageDescription">Importe um arquivo Excel para começar</p>
+                </div>
                 <div class="header-actions">
-                    <button class="btn btn-primary btn-sm" id="backupBtn">
+                    <button class="btn btn-secondary" id="importBtn">
+                        <i class="fas fa-file-import"></i> Importar Excel
+                    </button>
+                    <button class="btn btn-primary" id="backupBtn">
                         <i class="fas fa-database"></i> Backup
                     </button>
-                    <div class="file-upload-container">
-                        <button class="btn btn-secondary btn-sm" id="importBtn">
-                            <i class="fas fa-file-import"></i> Importar
-                        </button>
-                        <input type="file" id="excelFile" accept=".xlsx, .xls" style="display: none;">
-                    </div>
-                    <button class="btn btn-success btn-sm" id="refreshBtn">
-                        <i class="fas fa-sync-alt"></i> Atualizar
+                </div>
+            </div>
+            
+            <!-- Module Content -->
+            <div id="moduleContent">
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h3>Nenhum módulo carregado</h3>
+                    <p>Importe um arquivo Excel para visualizar as funcionalidades do sistema</p>
+                    <button class="btn btn-primary" id="importExcelBtn">
+                        <i class="fas fa-file-excel"></i> Importar Excel
                     </button>
-                </div>
-            </div>
-            
-            <!-- Tabs Navigation -->
-            <div class="tabs-container" id="tabsContainer" style="display: none;">
-                <div class="tabs-header" id="tabsHeader">
-                    <!-- Tabs serão geradas dinamicamente -->
-                </div>
-                <div class="content-area" id="tabsContent">
-                    <!-- Conteúdo das tabs será gerado dinamicamente -->
-                </div>
-            </div>
-            
-            <!-- Main Dashboard -->
-            <div id="dashboardContent">
-                <div class="import-section">
-                    <h3 class="section-title">NDD CARGO - Sistema de Gestão</h3>
-                    <p>Bem-vindo ao sistema completo de gestão para transportadoras. Importe seu arquivo Excel para carregar todos os módulos e funcionalidades.</p>
-                    
-                    <div class="import-info">
-                        <i class="fas fa-info-circle"></i>
-                        <div>
-                            <p><strong>Sistema com Persistência de Dados</strong></p>
-                            <p>Seus dados são salvos automaticamente no navegador e podem ser exportados/importados para outras máquinas.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="data-update-info">
-                        <p><strong>Status do sistema:</strong> <span id="systemStatus">Carregando...</span></p>
-                        <p><strong>Módulos carregados:</strong> <span id="modulesCount">0</span></p>
-                        <p><strong>Última atualização:</strong> <span id="lastUpdate">--/--/---- --:--</span></p>
-                        <p><strong>Armazenamento local:</strong> <span id="storageStatus">Verificando...</span></p>
-                    </div>
-
-                    <div class="backup-section">
-                        <h3><i class="fas fa-shield-alt"></i> Backup e Restauração</h3>
-                        <p>Exporte seus dados para um arquivo JSON e importe em qualquer máquina para continuar seu trabalho.</p>
-                        
-                        <div class="backup-options">
-                            <button class="btn btn-warning" id="exportBackupBtn">
-                                <i class="fas fa-file-export"></i> Exportar Backup
-                            </button>
-                            <button class="btn btn-secondary" id="importBackupBtn">
-                                <i class="fas fa-file-import"></i> Importar Backup
-                            </button>
-                            <button class="btn btn-primary" id="clearDataBtn">
-                                <i class="fas fa-trash-alt"></i> Limpar Dados
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div id="welcomeMessage" style="text-align: center; margin-top: 40px; padding: 40px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: var(--border-radius);">
-                    <i class="fas fa-shipping-fast" style="font-size: 64px; margin-bottom: 20px; color: var(--primary);"></i>
-                    <h3 style="margin-bottom: 12px; color: var(--dark);">Comece importando seus dados</h3>
-                    <p style="color: var(--gray); margin-bottom: 24px;">Importe o arquivo Excel ou restaure um backup para carregar o sistema</p>
-                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-                        <button class="btn btn-primary" id="importExcelBtn">
-                            <i class="fas fa-file-excel"></i> Importar Excel
-                        </button>
-                        <button class="btn btn-secondary" id="tryDemoBtn">
-                            <i class="fas fa-play-circle"></i> Carregar Demo
-                        </button>
-                    </div>
                 </div>
             </div>
         </main>
     </div>
     
-    <!-- Modal para Backup -->
-    <div class="modal" id="backupModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Backup e Restauração</h3>
-                <button class="modal-close" id="closeBackupModal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <p>Escolha uma opção para gerenciar seus dados:</p>
-                
-                <div class="modal-grid">
-                    <div class="modal-option" id="exportOption">
-                        <i class="fas fa-file-export"></i>
-                        <h4>Exportar Backup</h4>
-                        <p>Salve seus dados em um arquivo JSON</p>
-                    </div>
-                    
-                    <div class="modal-option" id="importOption">
-                        <i class="fas fa-file-import"></i>
-                        <h4>Importar Backup</h4>
-                        <p>Carregue dados de um backup anterior</p>
-                    </div>
-                    
-                    <div class="modal-option" id="clearOption">
-                        <i class="fas fa-trash-alt"></i>
-                        <h4>Limpar Dados</h4>
-                        <p>Remova todos os dados do sistema</p>
-                    </div>
-                    
-                    <div class="modal-option" id="demoOption">
-                        <i class="fas fa-play-circle"></i>
-                        <h4>Dados Demo</h4>
-                        <p>Carregue dados de exemplo</p>
-                    </div>
-                </div>
-                
-                <div class="data-update-info" style="margin-top: 20px;">
-                    <p><strong>Status do armazenamento:</strong> <span id="modalStorageStatus">Verificando...</span></p>
-                    <p><strong>Tamanho dos dados:</strong> <span id="dataSize">0 KB</span></p>
-                    <p><strong>Último backup:</strong> <span id="lastBackupDate">Nunca</span></p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-secondary" id="cancelBackup">Fechar</button>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Modal para Importação de Excel -->
+    <!-- Modal de Importação -->
     <div class="modal" id="importModal">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title">Importar Arquivo Excel</h3>
-                <button class="modal-close" id="closeImportModal">&times;</button>
+                <button class="modal-close" id="closeModal">&times;</button>
             </div>
             <div class="modal-body">
-                <p>Selecione o arquivo Excel (BD_SKU.xlsx) para importar os dados para o sistema.</p>
-                <p>Cada "Aba" no Excel será transformada em um módulo do sistema, com suas respectivas funcionalidades.</p>
+                <p style="margin-bottom: 16px; font-size: 14px;">Selecione o arquivo Excel (BD_SKU.xlsx) com as funcionalidades do sistema.</p>
                 
                 <div style="margin: 20px 0;">
                     <label for="fileInput" class="btn btn-secondary" style="display: inline-block;">
                         <i class="fas fa-folder-open"></i> Escolher Arquivo
                     </label>
                     <input type="file" id="fileInput" accept=".xlsx, .xls" style="display: none;">
-                    <span id="fileName" style="margin-left: 12px; color: var(--gray);">Nenhum arquivo selecionado</span>
+                    <span id="fileName" style="margin-left: 12px; font-size: 13px; color: var(--gray);">Nenhum arquivo selecionado</span>
                 </div>
                 
-                <div id="importPreview" class="import-preview">
-                    <!-- Pré-visualização dos dados será exibida aqui -->
+                <div class="import-info">
+                    <i class="fas fa-info-circle"></i>
+                    <div style="font-size: 13px;">
+                        <strong>Estrutura esperada:</strong> Colunas "Aba" (módulo), "Sub Aba" (funcionalidade), "O que é / O que faz" (descrição)
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" id="cancelImport">Cancelar</button>
-                <button class="btn btn-primary" id="confirmImport" disabled>Importar Dados</button>
+                <button class="btn btn-primary" id="confirmImport" disabled>Importar</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Backup -->
+    <div class="modal" id="backupModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Gerenciar Dados</h3>
+                <button class="modal-close" id="closeBackupModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 20px; font-size: 14px;">Gerencie o armazenamento dos dados do sistema</p>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    <div style="background: var(--primary-light); padding: 16px; border-radius: var(--border-radius);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-file-export" style="color: var(--primary);"></i>
+                            <div style="font-weight: 500; font-size: 14px;">Exportar Backup</div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray);">Salve um arquivo JSON com todos os dados</div>
+                        <button class="btn btn-primary" id="exportBtn" style="margin-top: 12px; width: 100%; padding: 8px;">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
+                    </div>
+                    
+                    <div style="background: #f0f9ff; padding: 16px; border-radius: var(--border-radius);">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <i class="fas fa-file-import" style="color: var(--primary);"></i>
+                            <div style="font-weight: 500; font-size: 14px;">Importar Backup</div>
+                        </div>
+                        <div style="font-size: 12px; color: var(--gray);">Carregue dados de um backup anterior</div>
+                        <button class="btn btn-secondary" id="importBackupBtn" style="margin-top: 12px; width: 100%; padding: 8px;">
+                            <i class="fas fa-upload"></i> Importar
+                        </button>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 20px; padding: 16px; background: #f8fafc; border-radius: var(--border-radius); font-size: 13px;">
+                    <div style="margin-bottom: 8px;"><strong>Status:</strong> <span id="storageStatus">Verificando...</span></div>
+                    <div style="margin-bottom: 8px;"><strong>Módulos carregados:</strong> <span id="modulesCount">0</span></div>
+                    <div><strong>Última atualização:</strong> <span id="lastUpdate">--/--/---- --:--</span></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="closeModalBtn">Fechar</button>
             </div>
         </div>
     </div>
@@ -842,29 +645,20 @@
     <!-- Notification -->
     <div class="notification" id="notification"></div>
     
-    <!-- Hidden element for download -->
-    <a id="downloadAnchor" style="display:none"></a>
-    
     <script>
-        // Chaves para armazenamento local
-        const STORAGE_KEYS = {
-            SYSTEM_DATA: 'ndd_cargo_system_data',
-            LAST_UPDATE: 'ndd_cargo_last_update',
-            BACKUP_INFO: 'ndd_cargo_backup_info'
-        };
-
+        // Sistema de armazenamento
+        const STORAGE_KEY = 'ndd_cargo_data';
+        
         // Dados do sistema
         let systemData = {
             modules: [],
-            lastUpdate: null,
-            backupInfo: {
-                lastBackup: null,
-                createdBy: 'NDD CARGO System',
-                version: '1.0.0'
-            }
+            lastUpdate: null
         };
-
-        // Mapeamento de ícones para cada módulo
+        
+        // Módulo atual selecionado
+        let currentModule = null;
+        
+        // Ícones para os módulos
         const moduleIcons = {
             "Contratante": "fas fa-building",
             "Veículos": "fas fa-truck",
@@ -877,128 +671,199 @@
             "Consultas": "fas fa-search",
             "Padrão de Impressão": "fas fa-print"
         };
-
-        // Dados de exemplo (demo)
-        const demoData = [
-            { aba: "Contratante", subAba: "Dados Cadastrais", descricao: "Atualizar dados da contratante" },
-            { aba: "Contratante", subAba: "Emitentes", descricao: "Lista de todos os emitentes cadastrados, permite editar e criar novos cadastros" },
-            { aba: "Contratante", subAba: "Usuários", descricao: "Lista de todos os usuários cadastrados, permite editar e criar novos cadastros" },
-            { aba: "Contratante", subAba: "Colaboradores", descricao: "Lista de colaboradores cadastrados, permite editar e criar novos cadastros" },
-            { aba: "Contratante", subAba: "Regras de Valores", descricao: "Editar regras de valores máxi e mín de pgto frete e VPO" },
-            { aba: "Contratante", subAba: "Regras de Parcela", descricao: "Lista de todas regras de parcela cadastradas, permite editar e criar novas" },
-            { aba: "Contratante", subAba: "Modelos de Rota", descricao: "Lista de todos as rotas cadastradas, permite editar e criar novas rotas" },
-            { aba: "Contratante", subAba: "Estoques de Cartões", descricao: "Define a qtde aceitável e quantidade crítica de cartões frete em seu estoque" },
-            { aba: "Contratante", subAba: "Responsabilidades", descricao: "Dispara e-mails quando determinadas situações ocorrem nos processos" },
-            { aba: "Contratante", subAba: "Minha Conta Digital", descricao: "Extrato de conta digital/movimentações realizadas" },
-            { aba: "Contratante", subAba: "Configurações", descricao: "Configurações do sistema" },
-            { aba: "Veículos", subAba: "Veículos", descricao: "Lista de todos os veículos cadastrados, permite editar e criar novos cadastros" },
-            { aba: "Condutores", subAba: "Condutores", descricao: "Permite editar e criar cadastros de novos condutores" },
-            { aba: "Transportadores", subAba: "Transportadores", descricao: "Permite editar e criar cadastros de novos transportadores" }
-        ];
-
-        // Inicializar o sistema
+        
+        // Inicializar
         document.addEventListener('DOMContentLoaded', function() {
-            // Carregar dados salvos
             loadSavedData();
-            
-            // Configurar eventos
             setupEventListeners();
-            
-            // Atualizar interface
             updateUI();
-            
-            // Verificar armazenamento
-            checkStorageStatus();
         });
-
-        // Carregar dados salvos do localStorage
+        
+        // Carregar dados salvos
         function loadSavedData() {
             try {
-                const savedData = localStorage.getItem(STORAGE_KEYS.SYSTEM_DATA);
-                const savedUpdate = localStorage.getItem(STORAGE_KEYS.LAST_UPDATE);
-                const savedBackupInfo = localStorage.getItem(STORAGE_KEYS.BACKUP_INFO);
-                
-                if (savedData) {
-                    const parsedData = JSON.parse(savedData);
-                    if (parsedData && parsedData.modules && parsedData.modules.length > 0) {
-                        systemData.modules = parsedData.modules;
-                        systemData.lastUpdate = savedUpdate ? new Date(savedUpdate) : new Date();
-                        systemData.backupInfo = savedBackupInfo ? JSON.parse(savedBackupInfo) : systemData.backupInfo;
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const data = JSON.parse(saved);
+                    if (data && data.modules) {
+                        systemData = data;
                         return true;
                     }
                 }
-            } catch (error) {
-                console.error('Erro ao carregar dados salvos:', error);
-                showNotification('Erro ao carregar dados salvos', 'error');
+            } catch (e) {
+                console.error('Erro ao carregar dados:', e);
             }
-            
             return false;
         }
-
-        // Salvar dados no localStorage
-        function saveDataToStorage() {
+        
+        // Salvar dados
+        function saveData() {
             try {
-                localStorage.setItem(STORAGE_KEYS.SYSTEM_DATA, JSON.stringify({
-                    modules: systemData.modules,
-                    backupInfo: systemData.backupInfo
-                }));
-                
-                localStorage.setItem(STORAGE_KEYS.LAST_UPDATE, new Date().toISOString());
-                localStorage.setItem(STORAGE_KEYS.BACKUP_INFO, JSON.stringify(systemData.backupInfo));
-                
+                systemData.lastUpdate = new Date().toISOString();
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(systemData));
                 return true;
-            } catch (error) {
-                console.error('Erro ao salvar dados:', error);
-                showNotification('Erro ao salvar dados no armazenamento local', 'error');
+            } catch (e) {
+                console.error('Erro ao salvar dados:', e);
                 return false;
             }
         }
-
+        
         // Configurar eventos
         function setupEventListeners() {
             // Botões principais
-            document.getElementById('backupBtn').addEventListener('click', openBackupModal);
             document.getElementById('importBtn').addEventListener('click', openImportModal);
-            document.getElementById('refreshBtn').addEventListener('click', refreshSystem);
-            
-            // Botões da página inicial
             document.getElementById('importExcelBtn').addEventListener('click', openImportModal);
-            document.getElementById('tryDemoBtn').addEventListener('click', loadDemoData);
+            document.getElementById('backupBtn').addEventListener('click', openBackupModal);
             
-            // Botões de backup
-            document.getElementById('exportBackupBtn').addEventListener('click', exportBackup);
-            document.getElementById('importBackupBtn').addEventListener('click', openImportBackup);
-            document.getElementById('clearDataBtn').addEventListener('click', confirmClearData);
+            // Modal de importação
+            document.getElementById('closeModal').addEventListener('click', closeImportModal);
+            document.getElementById('cancelImport').addEventListener('click', closeImportModal);
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            document.getElementById('confirmImport').addEventListener('click', confirmImport);
             
             // Modal de backup
             document.getElementById('closeBackupModal').addEventListener('click', closeBackupModal);
-            document.getElementById('cancelBackup').addEventListener('click', closeBackupModal);
-            document.getElementById('exportOption').addEventListener('click', exportBackup);
-            document.getElementById('importOption').addEventListener('click', openImportBackup);
-            document.getElementById('clearOption').addEventListener('click', confirmClearData);
-            document.getElementById('demoOption').addEventListener('click', loadDemoData);
-            
-            // Modal de importação
-            document.getElementById('closeImportModal').addEventListener('click', closeImportModal);
-            document.getElementById('cancelImport').addEventListener('click', closeImportModal);
-            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-            document.getElementById('confirmImport').addEventListener('click', importData);
+            document.getElementById('closeModalBtn').addEventListener('click', closeBackupModal);
+            document.getElementById('exportBtn').addEventListener('click', exportBackup);
+            document.getElementById('importBackupBtn').addEventListener('click', importBackup);
             
             // Fechar modais ao clicar fora
-            document.getElementById('backupModal').addEventListener('click', function(e) {
-                if (e.target === this) closeBackupModal();
-            });
-            
             document.getElementById('importModal').addEventListener('click', function(e) {
                 if (e.target === this) closeImportModal();
             });
+            
+            document.getElementById('backupModal').addEventListener('click', function(e) {
+                if (e.target === this) closeBackupModal();
+            });
         }
-
+        
+        // Atualizar interface
+        function updateUI() {
+            updateMenu();
+            updateModuleContent();
+            updateBackupInfo();
+            
+            // Mostrar/esconder empty state
+            const emptyState = document.getElementById('emptyState');
+            if (systemData.modules.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+        
+        // Atualizar menu lateral
+        function updateMenu() {
+            const menuItems = document.getElementById('menuItems');
+            menuItems.innerHTML = '';
+            
+            systemData.modules.forEach(module => {
+                // Item do menu principal
+                const menuItem = document.createElement('div');
+                menuItem.className = 'menu-item';
+                if (currentModule && currentModule.name === module.name) {
+                    menuItem.classList.add('active');
+                }
+                
+                menuItem.innerHTML = `
+                    <i class="${module.icon}"></i>
+                    <span>${module.name}</span>
+                `;
+                
+                menuItem.addEventListener('click', () => {
+                    selectModule(module.name);
+                });
+                
+                menuItems.appendChild(menuItem);
+            });
+        }
+        
+        // Selecionar módulo
+        function selectModule(moduleName) {
+            currentModule = systemData.modules.find(m => m.name === moduleName);
+            updateModuleContent();
+            updateMenu();
+        }
+        
+        // Atualizar conteúdo do módulo
+        function updateModuleContent() {
+            const moduleContent = document.getElementById('moduleContent');
+            
+            if (!currentModule) {
+                // Mostrar lista de todos os módulos se nenhum estiver selecionado
+                if (systemData.modules.length > 0) {
+                    let html = '<div class="functionality-grid">';
+                    
+                    systemData.modules.forEach(module => {
+                        html += `
+                            <div class="functionality-card" onclick="selectModule('${module.name}')" style="cursor: pointer;">
+                                <div class="card-header">
+                                    <div class="card-icon">
+                                        <i class="${module.icon}"></i>
+                                    </div>
+                                    <div>
+                                        <div class="card-title">${module.name}</div>
+                                        <div class="card-subtitle">${module.functionalities.length} funcionalidades</div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    Clique para ver todas as funcionalidades deste módulo
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    html += '</div>';
+                    moduleContent.innerHTML = html;
+                    
+                    // Atualizar header
+                    document.getElementById('pageTitle').textContent = 'Todos os Módulos';
+                    document.getElementById('pageDescription').textContent = `${systemData.modules.length} módulos carregados`;
+                }
+                return;
+            }
+            
+            // Atualizar header
+            document.getElementById('pageTitle').textContent = currentModule.name;
+            document.getElementById('pageDescription').textContent = `${currentModule.functionalities.length} funcionalidades disponíveis`;
+            
+            // Construir conteúdo do módulo
+            let html = `
+                <div class="module-header">
+                    <h2>${currentModule.name}</h2>
+                    <p>Gerencie todas as funcionalidades relacionadas a ${currentModule.name.toLowerCase()}</p>
+                </div>
+                <div class="functionality-grid">
+            `;
+            
+            currentModule.functionalities.forEach(func => {
+                html += `
+                    <div class="functionality-card">
+                        <div class="card-header">
+                            <div class="card-icon">
+                                <i class="${currentModule.icon}"></i>
+                            </div>
+                            <div>
+                                <div class="card-title">${func.name}</div>
+                                <div class="card-subtitle">${currentModule.name}</div>
+                            </div>
+                        </div>
+                        <div class="card-content">
+                            ${func.description}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            moduleContent.innerHTML = html;
+        }
+        
         // Processar dados do Excel
         function processExcelData(excelData) {
             const modulesMap = {};
             
-            // Organizar dados por módulo (aba)
+            // Organizar por módulo
             excelData.forEach(item => {
                 if (!item.aba || !item.subAba) return;
                 
@@ -1012,336 +877,156 @@
                 
                 modulesMap[item.aba].functionalities.push({
                     name: item.subAba,
-                    description: item.descricao || "Sem descrição"
+                    description: item.descricao || "Sem descrição disponível"
                 });
             });
             
             // Converter para array
             systemData.modules = Object.values(modulesMap);
-            systemData.lastUpdate = new Date();
             
-            // Salvar no armazenamento local
-            if (saveDataToStorage()) {
-                // Atualizar interface
+            // Selecionar primeiro módulo por padrão
+            if (systemData.modules.length > 0) {
+                currentModule = systemData.modules[0];
+            }
+            
+            // Salvar dados
+            if (saveData()) {
                 updateUI();
-                
-                // Mostrar notificação
-                showNotification(`Sistema atualizado com ${systemData.modules.length} módulos`, 'success');
-                
+                showNotification(`${systemData.modules.length} módulos carregados`, 'success');
                 return true;
             }
             
             return false;
         }
-
-        // Atualizar interface do usuário
-        function updateUI() {
-            // Atualizar menu lateral
-            updateMenu();
-            
-            // Atualizar informações do sistema
-            updateSystemInfo();
-            
-            // Se houver módulos, mostrar a área de módulos
-            if (systemData.modules.length > 0) {
-                showModulesArea();
-                document.getElementById('welcomeMessage').style.display = 'none';
-            } else {
-                showDashboard();
-                document.getElementById('welcomeMessage').style.display = 'block';
+        
+        // Abrir modal de importação
+        function openImportModal() {
+            document.getElementById('importModal').style.display = 'flex';
+            document.getElementById('fileName').textContent = 'Nenhum arquivo selecionado';
+            document.getElementById('confirmImport').disabled = true;
+        }
+        
+        // Fechar modal de importação
+        function closeImportModal() {
+            document.getElementById('importModal').style.display = 'none';
+        }
+        
+        // Manipular seleção de arquivo
+        function handleFileSelect(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('confirmImport').disabled = false;
             }
         }
-
-        // Atualizar menu lateral
-        function updateMenu() {
-            const menuContainer = document.getElementById('menuItems');
-            menuContainer.innerHTML = '';
+        
+        // Confirmar importação
+        function confirmImport() {
+            const fileInput = document.getElementById('fileInput');
+            if (fileInput.files.length > 0) {
+                readExcelFile(fileInput.files[0]);
+                closeImportModal();
+            }
+        }
+        
+        // Ler arquivo Excel
+        function readExcelFile(file) {
+            const reader = new FileReader();
             
-            systemData.modules.forEach(module => {
-                const menuItem = document.createElement('div');
-                menuItem.className = 'menu-item';
-                menuItem.setAttribute('data-module', module.name);
-                
-                menuItem.innerHTML = `
-                    <i class="${module.icon}"></i>
-                    <span>${module.name}</span>
-                    <i class="fas fa-chevron-down" style="margin-left: auto; font-size: 12px;"></i>
-                `;
-                
-                // Criar submenu
-                const subMenu = document.createElement('div');
-                subMenu.className = 'sub-menu';
-                subMenu.id = `submenu-${module.name.replace(/\s+/g, '-')}`;
-                
-                module.functionalities.forEach(func => {
-                    const subItem = document.createElement('div');
-                    subItem.className = 'sub-item';
-                    subItem.textContent = func.name;
-                    subItem.setAttribute('data-module', module.name);
-                    subItem.setAttribute('data-function', func.name);
-                    subItem.addEventListener('click', function() {
-                        openModule(module.name, func.name);
-                    });
-                    subMenu.appendChild(subItem);
-                });
-                
-                // Evento para expandir/colapsar submenu
-                menuItem.addEventListener('click', function(e) {
-                    e.stopPropagation();
+            reader.onload = function(e) {
+                try {
+                    const data = new Uint8Array(e.target.result);
+                    const workbook = XLSX.read(data, { type: 'array' });
+                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
                     
-                    // Fechar outros submenus
-                    document.querySelectorAll('.sub-menu').forEach(sub => {
-                        if (sub !== subMenu) {
-                            sub.classList.remove('active');
+                    // Processar dados
+                    const processedData = [];
+                    for (let i = 1; i < jsonData.length; i++) {
+                        const row = jsonData[i];
+                        if (row && row.length >= 3 && row[0] && row[1]) {
+                            processedData.push({
+                                aba: row[0],
+                                subAba: row[1],
+                                descricao: row[2] || ''
+                            });
                         }
-                    });
-                    
-                    // Alternar submenu atual
-                    subMenu.classList.toggle('active');
-                    
-                    // Atualizar ícone
-                    const icon = this.querySelector('.fa-chevron-down');
-                    if (subMenu.classList.contains('active')) {
-                        icon.classList.remove('fa-chevron-down');
-                        icon.classList.add('fa-chevron-up');
-                    } else {
-                        icon.classList.remove('fa-chevron-up');
-                        icon.classList.add('fa-chevron-down');
                     }
-                });
-                
-                menuContainer.appendChild(menuItem);
-                menuContainer.appendChild(subMenu);
-            });
-        }
-
-        // Atualizar informações do sistema
-        function updateSystemInfo() {
-            document.getElementById('modulesCount').textContent = systemData.modules.length;
-            
-            if (systemData.lastUpdate) {
-                const date = systemData.lastUpdate;
-                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-                document.getElementById('lastUpdate').textContent = formattedDate;
-                document.getElementById('systemStatus').textContent = 'Sistema carregado';
-            } else {
-                document.getElementById('systemStatus').textContent = 'Aguardando dados';
-            }
-        }
-
-        // Mostrar área de módulos
-        function showModulesArea() {
-            document.getElementById('dashboardContent').style.display = 'none';
-            document.getElementById('tabsContainer').style.display = 'block';
-            
-            // Atualizar título
-            document.getElementById('pageTitle').textContent = 'Módulos do Sistema';
-            
-            // Criar tabs
-            createTabs();
-        }
-
-        // Mostrar dashboard inicial
-        function showDashboard() {
-            document.getElementById('dashboardContent').style.display = 'block';
-            document.getElementById('tabsContainer').style.display = 'none';
-            document.getElementById('pageTitle').textContent = 'Dashboard do Sistema';
-        }
-
-        // Criar tabs para cada módulo
-        function createTabs() {
-            const tabsHeader = document.getElementById('tabsHeader');
-            const tabsContent = document.getElementById('tabsContent');
-            
-            tabsHeader.innerHTML = '';
-            tabsContent.innerHTML = '';
-            
-            systemData.modules.forEach((module, index) => {
-                // Criar botão da tab
-                const tabBtn = document.createElement('button');
-                tabBtn.className = `tab-btn ${index === 0 ? 'active' : ''}`;
-                tabBtn.textContent = module.name;
-                tabBtn.setAttribute('data-tab', module.name.replace(/\s+/g, '-'));
-                
-                tabBtn.addEventListener('click', function() {
-                    // Remover classe active de todas as tabs
-                    document.querySelectorAll('.tab-btn').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
                     
-                    // Adicionar classe active à tab clicada
-                    this.classList.add('active');
-                    
-                    // Mostrar conteúdo correspondente
-                    document.querySelectorAll('.tab-content').forEach(content => {
-                        content.classList.remove('active');
-                    });
-                    
-                    const tabId = this.getAttribute('data-tab');
-                    document.getElementById(`tab-${tabId}`).classList.add('active');
-                });
-                
-                tabsHeader.appendChild(tabBtn);
-                
-                // Criar conteúdo da tab
-                const tabContent = document.createElement('div');
-                tabContent.className = `tab-content ${index === 0 ? 'active' : ''}`;
-                tabContent.id = `tab-${module.name.replace(/\s+/g, '-')}`;
-                
-                let contentHTML = `<h3 class="section-title">${module.name}</h3>`;
-                contentHTML += `<p style="margin-bottom: 24px; color: var(--gray);">Gerencie todas as funcionalidades relacionadas a ${module.name.toLowerCase()}</p>`;
-                contentHTML += '<div class="module-grid">';
-                
-                module.functionalities.forEach(func => {
-                    contentHTML += `
-                        <div class="module-card" onclick="openFunctionality('${module.name}', '${func.name}')">
-                            <div class="module-icon">
-                                <i class="${module.icon}"></i>
-                            </div>
-                            <h3>${func.name}</h3>
-                            <p>${func.description}</p>
-                        </div>
-                    `;
-                });
-                
-                contentHTML += '</div>';
-                tabContent.innerHTML = contentHTML;
-                tabsContent.appendChild(tabContent);
-            });
-        }
-
-        // Abrir módulo específico
-        function openModule(moduleName, functionName) {
-            // Encontrar a tab do módulo
-            const tabId = moduleName.replace(/\s+/g, '-');
-            const tabBtn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+                    if (processedData.length > 0) {
+                        processExcelData(processedData);
+                    } else {
+                        showNotification('Nenhum dado válido encontrado', 'error');
+                    }
+                } catch (error) {
+                    showNotification('Erro ao ler arquivo Excel', 'error');
+                }
+            };
             
-            if (tabBtn) {
-                // Ativar a tab
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                tabBtn.classList.add('active');
-                
-                // Mostrar conteúdo da tab
-                document.querySelectorAll('.tab-content').forEach(content => {
-                    content.classList.remove('active');
-                });
-                document.getElementById(`tab-${tabId}`).classList.add('active');
-                
-                // Mostrar notificação
-                showNotification(`${moduleName} > ${functionName}`, 'info');
-            }
+            reader.readAsArrayBuffer(file);
         }
-
-        // Abrir funcionalidade
-        function openFunctionality(moduleName, functionName) {
-            showNotification(`Abrindo ${functionName} em ${moduleName}`, 'info');
-        }
-
-        // Atualizar sistema
-        function refreshSystem() {
-            if (systemData.modules.length > 0) {
-                // Recarregar dados do armazenamento
-                loadSavedData();
-                updateUI();
-                showNotification('Sistema atualizado', 'success');
-            } else {
-                showNotification('Importe dados para começar', 'warning');
-            }
-        }
-
-        // Verificar status do armazenamento
-        function checkStorageStatus() {
-            try {
-                const testKey = '__storage_test__';
-                localStorage.setItem(testKey, 'test');
-                localStorage.removeItem(testKey);
-                
-                const used = JSON.stringify(localStorage).length;
-                const total = 5 * 1024 * 1024; // 5MB típico para localStorage
-                const percent = Math.round((used / total) * 100);
-                
-                document.getElementById('storageStatus').textContent = `Disponível (${percent}% usado)`;
-                document.getElementById('modalStorageStatus').textContent = `Disponível (${percent}% usado)`;
-                document.getElementById('dataSize').textContent = `${Math.round(used / 1024)} KB`;
-                
-                return true;
-            } catch (error) {
-                document.getElementById('storageStatus').textContent = 'Indisponível';
-                document.getElementById('modalStorageStatus').textContent = 'Indisponível';
-                showNotification('Armazenamento local não disponível', 'error');
-                return false;
-            }
-        }
-
+        
         // Abrir modal de backup
         function openBackupModal() {
             document.getElementById('backupModal').style.display = 'flex';
-            updateBackupModalInfo();
         }
-
+        
         // Fechar modal de backup
         function closeBackupModal() {
             document.getElementById('backupModal').style.display = 'none';
         }
-
-        // Atualizar informações no modal de backup
-        function updateBackupModalInfo() {
-            // Atualizar data do último backup
-            if (systemData.backupInfo.lastBackup) {
-                const date = new Date(systemData.backupInfo.lastBackup);
-                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()}`;
-                document.getElementById('lastBackupDate').textContent = formattedDate;
-            } else {
-                document.getElementById('lastBackupDate').textContent = 'Nunca';
+        
+        // Atualizar informações de backup
+        function updateBackupInfo() {
+            document.getElementById('modulesCount').textContent = systemData.modules.length;
+            
+            if (systemData.lastUpdate) {
+                const date = new Date(systemData.lastUpdate);
+                const formattedDate = `${date.getDate().toString().padStart(2, '0')}/${(date.getMonth()+1).toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+                document.getElementById('lastUpdate').textContent = formattedDate;
             }
             
-            // Atualizar tamanho dos dados
+            // Verificar armazenamento
             try {
-                const dataSize = JSON.stringify(systemData).length;
-                document.getElementById('dataSize').textContent = `${Math.round(dataSize / 1024)} KB`;
-            } catch (error) {
-                document.getElementById('dataSize').textContent = '0 KB';
+                const used = JSON.stringify(localStorage).length;
+                const percent = Math.round((used / (5 * 1024 * 1024)) * 100);
+                document.getElementById('storageStatus').textContent = `${percent}% usado`;
+            } catch (e) {
+                document.getElementById('storageStatus').textContent = 'Indisponível';
             }
         }
-
+        
         // Exportar backup
         function exportBackup() {
             try {
                 const backupData = {
                     systemData: systemData,
                     exportDate: new Date().toISOString(),
-                    version: '1.0.0',
-                    appName: 'NDD CARGO'
+                    version: '1.0'
                 };
                 
                 const dataStr = JSON.stringify(backupData, null, 2);
                 const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
                 
-                const exportFileDefaultName = `ndd_cargo_backup_${new Date().toISOString().split('T')[0]}.json`;
+                const exportFileDefaultName = `ndd_cargo_${new Date().toISOString().split('T')[0]}.json`;
                 
-                const linkElement = document.getElementById('downloadAnchor');
-                linkElement.setAttribute('href', dataUri);
-                linkElement.setAttribute('download', exportFileDefaultName);
-                linkElement.click();
+                const link = document.createElement('a');
+                link.setAttribute('href', dataUri);
+                link.setAttribute('download', exportFileDefaultName);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 
-                // Atualizar info de backup
-                systemData.backupInfo.lastBackup = new Date().toISOString();
-                saveDataToStorage();
-                
-                showNotification('Backup exportado com sucesso!', 'success');
+                showNotification('Backup exportado com sucesso', 'success');
                 closeBackupModal();
                 
             } catch (error) {
-                console.error('Erro ao exportar backup:', error);
                 showNotification('Erro ao exportar backup', 'error');
             }
         }
-
-        // Abrir importação de backup
-        function openImportBackup() {
-            // Criar input file para backup
+        
+        // Importar backup
+        function importBackup() {
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json';
@@ -1359,11 +1044,13 @@
                             if (backupData.systemData && backupData.systemData.modules) {
                                 if (confirm('Deseja restaurar este backup? Os dados atuais serão substituídos.')) {
                                     systemData = backupData.systemData;
-                                    systemData.lastUpdate = new Date();
+                                    if (systemData.modules.length > 0) {
+                                        currentModule = systemData.modules[0];
+                                    }
                                     
-                                    if (saveDataToStorage()) {
+                                    if (saveData()) {
                                         updateUI();
-                                        showNotification('Backup restaurado com sucesso!', 'success');
+                                        showNotification('Backup restaurado com sucesso', 'success');
                                         closeBackupModal();
                                     }
                                 }
@@ -1383,201 +1070,12 @@
             input.click();
             document.body.removeChild(input);
         }
-
-        // Confirmar limpeza de dados
-        function confirmClearData() {
-            if (confirm('Tem certeza que deseja limpar todos os dados do sistema? Esta ação não pode ser desfeita.')) {
-                clearAllData();
-            }
-        }
-
-        // Limpar todos os dados
-        function clearAllData() {
-            try {
-                localStorage.removeItem(STORAGE_KEYS.SYSTEM_DATA);
-                localStorage.removeItem(STORAGE_KEYS.LAST_UPDATE);
-                localStorage.removeItem(STORAGE_KEYS.BACKUP_INFO);
-                
-                systemData = {
-                    modules: [],
-                    lastUpdate: null,
-                    backupInfo: {
-                        lastBackup: null,
-                        createdBy: 'NDD CARGO System',
-                        version: '1.0.0'
-                    }
-                };
-                
-                updateUI();
-                showNotification('Todos os dados foram removidos', 'success');
-                closeBackupModal();
-                
-            } catch (error) {
-                showNotification('Erro ao limpar dados', 'error');
-            }
-        }
-
-        // Carregar dados de demonstração
-        function loadDemoData() {
-            if (confirm('Deseja carregar dados de demonstração? Os dados atuais serão substituídos.')) {
-                processExcelData(demoData);
-                showNotification('Dados de demonstração carregados', 'success');
-                closeBackupModal();
-            }
-        }
-
-        // Abrir modal de importação
-        function openImportModal() {
-            document.getElementById('importModal').style.display = 'flex';
-            document.getElementById('fileName').textContent = 'Nenhum arquivo selecionado';
-            document.getElementById('importPreview').innerHTML = '';
-            document.getElementById('confirmImport').disabled = true;
-        }
-
-        // Fechar modal de importação
-        function closeImportModal() {
-            document.getElementById('importModal').style.display = 'none';
-        }
-
-        // Manipular seleção de arquivo
-        function handleFileSelect(e) {
-            const file = e.target.files[0];
-            if (file) {
-                document.getElementById('fileName').textContent = file.name;
-                readExcelFile(file);
-            }
-        }
-
-        // Ler arquivo Excel
-        function readExcelFile(file) {
-            const reader = new FileReader();
-            
-            reader.onload = function(e) {
-                try {
-                    const data = new Uint8Array(e.target.result);
-                    const workbook = XLSX.read(data, { type: 'array' });
-                    
-                    // Supondo que os dados estão na primeira planilha
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-                    
-                    // Processar os dados do Excel
-                    const processedData = processExcelDataFromFile(jsonData);
-                    
-                    // Mostrar pré-visualização
-                    showImportPreview(processedData);
-                    
-                    // Habilitar botão de confirmação
-                    document.getElementById('confirmImport').disabled = false;
-                    
-                } catch (error) {
-                    showNotification('Erro ao ler o arquivo Excel', 'error');
-                    console.error('Erro:', error);
-                }
-            };
-            
-            reader.readAsArrayBuffer(file);
-        }
-
-        // Processar dados do Excel do arquivo
-        function processExcelDataFromFile(excelData) {
-            const processedData = [];
-            
-            // Ignorar cabeçalho (primeira linha)
-            for (let i = 1; i < excelData.length; i++) {
-                const row = excelData[i];
-                if (row && row.length >= 3 && row[0] && row[1]) {
-                    processedData.push({
-                        aba: row[0],
-                        subAba: row[1],
-                        descricao: row[2] || ''
-                    });
-                }
-            }
-            
-            return processedData;
-        }
-
-        // Mostrar pré-visualização dos dados
-        function showImportPreview(data) {
-            const previewContainer = document.getElementById('importPreview');
-            previewContainer.innerHTML = '';
-            
-            if (data.length === 0) {
-                previewContainer.innerHTML = '<p style="color: var(--danger);">Nenhum dado válido encontrado no arquivo.</p>';
-                return;
-            }
-            
-            // Agrupar por módulo para exibição
-            const modulesPreview = {};
-            data.forEach(item => {
-                if (!modulesPreview[item.aba]) {
-                    modulesPreview[item.aba] = [];
-                }
-                modulesPreview[item.aba].push(item);
-            });
-            
-            let previewHTML = '<h4 style="margin-bottom: 12px;">Pré-visualização:</h4>';
-            
-            Object.keys(modulesPreview).forEach(moduleName => {
-                previewHTML += `<div style="margin-bottom: 16px; padding: 12px; background-color: #f5f5f5; border-radius: 8px;">`;
-                previewHTML += `<strong style="color: var(--primary);">${moduleName}</strong>`;
-                previewHTML += `<ul style="margin-top: 8px; padding-left: 20px;">`;
-                
-                modulesPreview[moduleName].slice(0, 3).forEach(item => {
-                    previewHTML += `<li style="margin-bottom: 4px; font-size: 14px;">${item.subAba}</li>`;
-                });
-                
-                if (modulesPreview[moduleName].length > 3) {
-                    previewHTML += `<li style="font-size: 12px; color: var(--gray);">+ ${modulesPreview[moduleName].length - 3} funcionalidades</li>`;
-                }
-                
-                previewHTML += '</ul></div>';
-            });
-            
-            previewHTML += `<p style="margin-top: 12px; font-size: 14px; color: var(--gray);">Total: ${Object.keys(modulesPreview).length} módulos, ${data.length} funcionalidades</p>`;
-            
-            previewContainer.innerHTML = previewHTML;
-        }
-
-        // Importar dados
-        function importData() {
-            const fileInput = document.getElementById('fileInput');
-            if (fileInput.files.length > 0) {
-                readExcelFile(fileInput.files[0]);
-                closeImportModal();
-                
-                // Processar após fechar o modal
-                setTimeout(() => {
-                    const file = fileInput.files[0];
-                    const reader = new FileReader();
-                    
-                    reader.onload = function(e) {
-                        try {
-                            const data = new Uint8Array(e.target.result);
-                            const workbook = XLSX.read(data, { type: 'array' });
-                            const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                            const jsonData = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
-                            const processedData = processExcelDataFromFile(jsonData);
-                            
-                            if (processedData.length > 0) {
-                                processExcelData(processedData);
-                            }
-                        } catch (error) {
-                            showNotification('Erro ao processar arquivo', 'error');
-                        }
-                    };
-                    
-                    reader.readAsArrayBuffer(file);
-                }, 300);
-            }
-        }
-
+        
         // Mostrar notificação
         function showNotification(message, type = 'info') {
             const notification = document.getElementById('notification');
             
-            // Definir cor baseada no tipo
+            // Cor baseada no tipo
             let backgroundColor = '';
             switch(type) {
                 case 'success': backgroundColor = 'var(--success)'; break;
@@ -1590,10 +1088,8 @@
             notification.textContent = message;
             notification.style.display = 'block';
             
-            // Animar entrada
             notification.style.animation = 'slideIn 0.3s ease';
             
-            // Remover após 3 segundos
             setTimeout(() => {
                 notification.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => {
@@ -1601,6 +1097,9 @@
                 }, 300);
             }, 3000);
         }
+        
+        // Expor função global para uso no HTML
+        window.selectModule = selectModule;
     </script>
 </body>
 </html>
