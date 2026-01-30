@@ -100,35 +100,35 @@
         }
 
         .theme-ndd-emite-facil {
-            --primary: #C9C91B;
-            --primary-light: #d8d84a;
-            --primary-dark: #b0b017;
-            --secondary: #FFFFFF;
+            --primary: #C9C91B; /* AMARELO ESCURO NO LUGAR DO CINZA */
+            --primary-light: #e0e047; /* Tom mais claro do amarelo */
+            --primary-dark: #a5a516; /* Tom mais escuro do amarelo */
+            --secondary: #FFFFFF; /* Branco mantido */
             --secondary-light: #f8f9fa;
-            --sidebar-bg: linear-gradient(180deg, #C9C91B 0%, #b0b017 100%);
-            --logo-gradient: linear-gradient(90deg, #C9C91B, #FFFFFF);
+            --sidebar-bg: linear-gradient(180deg, #0E2841 0%, #091b2e 100%); /* Sidebar em tons escuros */
+            --logo-gradient: linear-gradient(90deg, #C9C91B, #FFFFFF); /* Gradiente amarelo → branco */
             --unique-border: #FFFFFF; /* Borda branca única para NDD EMITE FÁCIL */
         }
 
         /* Ajuste do sidebar no modo escuro para NDD EMITE FÁCIL */
         .dark-mode.theme-ndd-emite-facil {
-            --sidebar-bg: linear-gradient(180deg, #C9C91B 0%, #b0b017 100%);
+            --sidebar-bg: linear-gradient(180deg, #0E2841 0%, #091b2e 100%); /* Mantém sidebar escuro no modo escuro */
         }
 
         .theme-ndd-frete-minimo {
-            --primary: #0F9ED5;
-            --primary-light: #3cb0e0;
-            --primary-dark: #0d8ab8;
-            --secondary: #FFFFFF;
-            --secondary-light: #f8f9fa;
-            --sidebar-bg: linear-gradient(180deg, #0F9ED5 0%, #0d8ab8 100%);
-            --logo-gradient: linear-gradient(90deg, #0F9ED5, #FFFFFF);
-            --unique-border: #FFFFFF; /* Borda branca única para NDD FRETE MÍNIMO */
+            --primary: #0F9ED5; /* AZUL NO LUGAR DO CINZA */
+            --primary-light: #2fb2e6; /* Tom mais claro do azul */
+            --primary-dark: #0c7ca9; /* Tom mais escuro do azul */
+            --secondary: #FFFFFF; /* Branco mantido */
+            --secondary-light: #f2f2f2;
+            --sidebar-bg: linear-gradient(180deg, #0E2841 0%, #091b2e 100%); /* Sidebar em tons escuros */
+            --logo-gradient: linear-gradient(90deg, #0F9ED5, #FFFFFF); /* Gradiente azul → branco */
+            --unique-border: #FFFFFF; /* Borda branca para destaque */
         }
 
         /* Ajuste do sidebar no modo escuro para NDD FRETE MÍNIMO */
         .dark-mode.theme-ndd-frete-minimo {
-            --sidebar-bg: linear-gradient(180deg, #0F9ED5 0%, #0d8ab8 100%);
+            --sidebar-bg: linear-gradient(180deg, #0E2841 0%, #091b2e 100%); /* Mantém sidebar escuro no modo escuro */
         }
 
         * {
@@ -1061,7 +1061,7 @@
                         <div style="padding: 8px 12px; background-color: #0E2841; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #CBC7EB;">
                             NDD ELOG
                         </div>
-                        <div style="padding: 8px 12px; background-color: #C9C91B; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #FFFFFF;">
+                        <div style="padding: 8px 12px; background-color: #C9C91B; color: #333; border-radius: 6px; font-size: 12px; border: 1px solid #FFFFFF;">
                             NDD EMITE FÁCIL
                         </div>
                         <div style="padding: 8px 12px; background-color: #0F9ED5; color: white; border-radius: 6px; font-size: 12px; border: 1px solid #FFFFFF;">
@@ -1242,8 +1242,8 @@
                 name: 'NDD EMITE FÁCIL',
                 theme: 'theme-ndd-emite-facil',
                 colors: {
-                    primary: '#C9C91B',
-                    secondary: '#FFFFFF',
+                    primary: '#C9C91B', // AMARELO ESCURO
+                    secondary: '#FFFFFF', // BRANCO MANTIDO
                     white: '#FFFFFF',
                     uniqueBorder: '#FFFFFF'
                 },
@@ -1277,8 +1277,8 @@
                 name: 'NDD FRETE MÍNIMO',
                 theme: 'theme-ndd-frete-minimo',
                 colors: {
-                    primary: '#0F9ED5',
-                    secondary: '#FFFFFF',
+                    primary: '#0F9ED5', // AZUL
+                    secondary: '#FFFFFF', // BRANCO MANTIDO
                     white: '#FFFFFF',
                     uniqueBorder: '#FFFFFF'
                 },
