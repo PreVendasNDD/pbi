@@ -662,6 +662,54 @@
             margin-bottom: 24px;
         }
 
+        /* Seção de Conceito do Produto */
+        .product-concept {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 28px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--unique-border);
+        }
+
+        .product-concept h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-concept h3 i {
+            color: var(--secondary);
+        }
+
+        .product-concept-content {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        .product-concept-content p {
+            margin-bottom: 16px;
+        }
+
+        .product-concept-content ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        .product-concept-content li {
+            margin-bottom: 8px;
+        }
+
+        .product-concept-content strong {
+            color: var(--primary);
+        }
+
         /* Seção de Links por Produto */
         .links-section {
             background-color: var(--card-bg);
@@ -994,6 +1042,14 @@
                 </div>
             </div>
             
+            <!-- Seção de Conceito do Produto -->
+            <div class="product-concept" id="productConceptSection" style="display: none;">
+                <h3><i class="fas fa-lightbulb"></i> Conceito do Produto - <span id="conceptProductName">NDD CARGO</span></h3>
+                <div class="product-concept-content" id="productConceptContent">
+                    <!-- Conteúdo será gerado dinamicamente conforme o produto -->
+                </div>
+            </div>
+            
             <!-- Painel de Links por Produto -->
             <div class="links-section" id="linksSection" style="display: none;">
                 <h3><i class="fas fa-external-link-alt"></i> Links Úteis - <span id="linksProductName">NDD CARGO</span></h3>
@@ -1160,7 +1216,18 @@
                         url: 'https://nddtech.notion.site/Nova-API-NDD-Cargo-1d81d5158ce680b4966dfcc02f1bffdf',
                         icon: 'fas fa-code'
                     }
-                ]
+                ],
+                concept: `
+                    <p>Presente na switch de nossas soluções, o NDD Cargo tem como core atender três pilares essenciais para a regulamentação e conciliação junto à ANTT, sempre que há a contratação de terceiros para transporte rodoviário de cargas:</p>
+                    
+                    <ol>
+                        <li><strong>Emissão de CIOT (Código Identificador da Operação de Transporte)</strong></li>
+                        <li><strong>Pagamento de frete</strong></li>
+                        <li><strong>Emissão e pagamento do Vale-Pedágio Obrigatório (VPO)</strong></li>
+                    </ol>
+                    
+                    <p>Tudo isso de forma centralizada em uma única solução, com integração aos principais fornecedores de TAGs, responsáveis pelo crédito dos valores de pedágio: Ticket Log, Move Mais, ConectCar, Sem Parar e Veloe.</p>
+                `
             },
             'NDD MOVE': {
                 name: 'NDD MOVE',
@@ -1203,7 +1270,8 @@
                         url: 'https://www.figma.com/proto/tYe7lTBhnQvMWCMBEeSCM9/Dashboard?page-id=0%3A1&type=design&node-id=1315-18538&viewport=585%2C3526%2C0.08&t=7WiAalvHtsTgc96H-9&scaling=scale-down&starting-point-node-id=1315%3A18538',
                         icon: 'fas fa-chart-bar'
                     }
-                ]
+                ],
+                concept: '<p>Conceito do NDD MOVE será adicionado em breve.</p>'
             },
             'NDD ELOG': {
                 name: 'NDD ELOG',
@@ -1236,7 +1304,8 @@
                         url: 'https://developer.nddelog.com/',
                         icon: 'fas fa-code'
                     }
-                ]
+                ],
+                concept: '<p>Conceito do NDD ELOG será adicionado em breve.</p>'
             },
             'NDD EMITE FÁCIL': {
                 name: 'NDD EMITE FÁCIL',
@@ -1271,7 +1340,8 @@
                         icon: 'fas fa-code',
                         disabled: true
                     }
-                ]
+                ],
+                concept: '<p>Conceito do NDD EMITE FÁCIL será adicionado em breve.</p>'
             },
             'NDD FRETE MÍNIMO': {
                 name: 'NDD FRETE MÍNIMO',
@@ -1301,7 +1371,8 @@
                         icon: 'fas fa-code',
                         disabled: true
                     }
-                ]
+                ],
+                concept: '<p>Conceito do NDD FRETE MÍNIMO será adicionado em breve.</p>'
             }
         };
         
@@ -1562,11 +1633,13 @@
             updateMenu();
             updateModuleContent();
             updateLinksSection();
+            updateProductConcept();
             
             // Mostrar/esconder conteúdo baseado nos dados
             const emptyState = document.getElementById('emptyState');
             const moduleContent = document.getElementById('moduleContent');
             const linksSection = document.getElementById('linksSection');
+            const productConceptSection = document.getElementById('productConceptSection');
             
             const currentProductData = systemData.products[systemData.currentProduct];
             const hasData = currentProductData && currentProductData.modules.length > 0;
@@ -1575,10 +1648,12 @@
                 emptyState.style.display = 'none';
                 moduleContent.style.display = 'block';
                 linksSection.style.display = 'block';
+                productConceptSection.style.display = 'block';
             } else {
                 emptyState.style.display = 'block';
                 moduleContent.style.display = 'none';
                 linksSection.style.display = 'none';
+                productConceptSection.style.display = 'none';
             }
         }
         
@@ -1716,6 +1791,18 @@
                 
                 document.getElementById('pageTitle').textContent = `${systemData.currentProduct} - ${currentModule.name}`;
             }
+        }
+        
+        // Atualizar seção de conceito do produto
+        function updateProductConcept() {
+            const currentProduct = systemData.currentProduct;
+            const productConcept = PRODUCT_THEMES[currentProduct] ? PRODUCT_THEMES[currentProduct].concept : '<p>Conceito do produto não disponível.</p>';
+            
+            // Atualizar nome do produto na seção
+            document.getElementById('conceptProductName').textContent = currentProduct;
+            
+            // Atualizar conteúdo do conceito
+            document.getElementById('productConceptContent').innerHTML = productConcept;
         }
         
         // Atualizar seção de links
