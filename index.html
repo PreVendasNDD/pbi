@@ -1521,9 +1521,330 @@
         
         // Dados do sistema
         let systemData = {
-            products: {}, // Produto -> { módulos: [], lastUpdate: timestamp }
-            currentProduct: 'NDD CARGO',
-            lastUpdate: null
+            products: {
+                "NDD CARGO": {
+                    modules: [
+                        {
+                            name: "Contratante",
+                            icon: "fas fa-building",
+                            functionalities: [
+                                { name: "Dados Cadastrais", description: "Atualizar dados da contratante" },
+                                { name: "Emitentes", description: "Lista de todos os emitentes cadastrados, permite editar e criar novos cadastros" },
+                                { name: "Usuários", description: "Lista de todos os usuários cadastrados, permite editar e criar novos cadastros" },
+                                { name: "Colaboradores", description: "Lista de colaboradores cadastrados, permite editar e criar novos cadastros" },
+                                { name: "Regras de Valores", description: "Editar regras de valores máxi e mín de pgto frete e VPO" },
+                                { name: "Regras de Parcela", description: "Lista de todas regras de parcela cadastradas, permite editar e criar novas" },
+                                { name: "Modelos de Rota", description: "Lista de todos as rotas cadastradas, permite editar e criar novas rotas" },
+                                { name: "Estoques de Cartões", description: "Define a qtde aceitável e quantidade crítica de cartões frete em seu estoque" },
+                                { name: "Responsabilidades", description: "Dispara e-mails quando determinadas situações ocorrem nos processos" },
+                                { name: "Minha Conta Digital", description: "Extrato de conta digital/movimentações realizadas" },
+                                { name: "Configurações", description: "?" }
+                            ]
+                        },
+                        {
+                            name: "Veículos",
+                            icon: "fas fa-truck",
+                            functionalities: [
+                                { name: "Veículos", description: "Lista de todos os veículos cadastrados, permite editar e criar novos cadastros" }
+                            ]
+                        },
+                        {
+                            name: "Condutores",
+                            icon: "fas fa-id-card",
+                            functionalities: [
+                                { name: "Condutores", description: "Permite editar e criar cadastros de novos condutores" }
+                            ]
+                        },
+                        {
+                            name: "Transportadores",
+                            icon: "fas fa-warehouse",
+                            functionalities: [
+                                { name: "Transportadores", description: "Permite editar e criar cadastros de novos transportadores" }
+                            ]
+                        },
+                        {
+                            name: "Emissões",
+                            icon: "fas fa-file-invoice-dollar",
+                            functionalities: [
+                                { name: "Operação de Transporte", description: "Emissão completa, CIOT + VPO + Pgto de FRETE" },
+                                { name: "Operação de Pagamento", description: "Emissão/lançamento de pagamento" },
+                                { name: "Operação de Vale-Pedágio", description: "Emissão/lançamento de VPO" }
+                            ]
+                        },
+                        {
+                            name: "Monitoramentos",
+                            icon: "fas fa-chart-line",
+                            functionalities: [
+                                { name: "Cartões Frete Vinculados", description: "Controle dos cartões vínvulados aos motoristas" },
+                                { name: "Estoque de Cartões Frete", description: "Controle dos Cartões Frete em estoque, não atribuidos em nenhum motorista" },
+                                { name: "Estoque de Cartões Frota", description: "Controle dos Cartões Frota vinculados em algum motorista interno" },
+                                { name: "Gerenciar Parcelas", description: "Motoriramento dos pagamentos de frete e adiantamentos" },
+                                { name: "Resgate de Valores de Cartões Frota", description: "Resgate de saldos restantes não utilizados no cartão frota" },
+                                { name: "Solicitações de Cartões", description: "Status de cartões solicitados" },
+                                { name: "Movimentação Prevista", description: "Movimentação prevista referente a operações de transporte" },
+                                { name: "Movimentação Realizada", description: "Movimentação realizada referente a operações de transporte" }
+                            ]
+                        },
+                        {
+                            name: "Integrações",
+                            icon: "fas fa-link",
+                            functionalities: [
+                                { name: "Acompanhamento", description: "Monitoramento referente as emissões/lançamentos via integração" },
+                                { name: "Validador", description: "Esta funcionalidade permite que o usuário realize a validação de sua integração" }
+                            ]
+                        },
+                        {
+                            name: "Relatórios",
+                            icon: "fas fa-chart-bar",
+                            functionalities: [
+                                { name: "Acompanhamento de OT", description: "Relatório de todas as operações de transportes emitidas (CIOT)" },
+                                { name: "Acompanhamento de OP", description: "Relatório de todas as operações de pagamento" },
+                                { name: "Cartões de Frete Vinculados", description: "Relatório de cartões frete vinculados" },
+                                { name: "Estoque de Cartões Frete", description: "Relatório de cartões frete vinculados em estoque/não vinculados" },
+                                { name: "Estoque de Cartões Frota", description: "Relatório de cartões frota vinculados em estoque/não vinculados" },
+                                { name: "Movimentações de Cartões Frota", description: "Relatório de todas as movimentações de cartões frota" },
+                                { name: "Operações de Vale-Pedágio Pagas", description: "Relatório de operações de vale-pedágio pagas" },
+                                { name: "OT sem MF", description: "Relatório de operações de transporte sem movimenação financeira" },
+                                { name: "Parcelas Pagas de OTs", description: "Relatório de parcelas pagas de operações de transporte" },
+                                { name: "Parcelas a Pagar das OTs", description: "Relatório de parcelas não pagas de operações de transporte" },
+                                { name: "Resgate de Valores Frota", description: "Relatório de resgates de valores de cartões frota" },
+                                { name: "Saldo de OTs", description: "Relatório do saldo (status) das operações de transporte com pgto" },
+                                { name: "Tarifas da OT", description: "?" },
+                                { name: "Transações de Pedágio", description: "Relatório de todas as transções de pedágio" },
+                                { name: "Movimentação por Operação", description: "?" },
+                                { name: "Extrato de Movimentações de Conta", description: "extrato de toda a movimentação de conta digital x cargo" }
+                            ]
+                        },
+                        {
+                            name: "Consultas",
+                            icon: "fas fa-search",
+                            functionalities: [
+                                { name: "Portador de Cartão Frete", description: "Permite pesquisa se motorista já possui cartão frete, ou se cartão já possui mot" },
+                                { name: "Situação do RNTRC", description: "Consulta sobre a situação de uma RNTRC específica" }
+                            ]
+                        },
+                        {
+                            name: "Padrão de Impressão",
+                            icon: "fas fa-print",
+                            functionalities: [
+                                { name: "Padrão de Impressão", description: "Configurar impressão, c/ usuário, impressora, comandos e pontos filiais" }
+                            ]
+                        }
+                    ],
+                    lastUpdate: "2026-03-10T19:54:05.710Z"
+                },
+                "NDD MOVE": {
+                    modules: [
+                        {
+                            name: "Importar Viagens",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Importar Viagens", description: "Incluir viagem manualmente pelo portão com Xml's" }
+                            ]
+                        },
+                        {
+                            name: "Monitoramento",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Por Viagem", description: "Visão micro/detalhada e individual de cada viagem, se já finalizada ou não" },
+                                { name: "Por Documento", description: "Visão micro/detalhada e individual de cada documento em viagem, se já finalizado ou não" },
+                                { name: "Painel de Monitoramento", description: "Visão macro da operação como um todo, número de ocorrências, entregas pendentes, veículos em trânsito e etc." }
+                            ]
+                        },
+                        {
+                            name: "Configurações",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Empresas", description: "Cadastro e edição de empresas" },
+                                { name: "Usuários", description: "Configurações e criação de usuários e respectivos permicionamentos" },
+                                { name: "Ocorrências", description: "-" },
+                                { name: "Grupos de Permissão", description: "Configurações e criação de grupos de permissão" },
+                                { name: "ESG", description: "Cadastro de tipos de veículos para o motor de mensuração de emissão de CO²" }
+                            ]
+                        }
+                    ],
+                    lastUpdate: "2026-03-10T19:54:05.710Z"
+                },
+                "NDD ELOG": {
+                    modules: [
+                        {
+                            name: "Dashboard",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Dashboard", description: "Visão de informações da operação de maneira mais dinâmica" }
+                            ]
+                        },
+                        {
+                            name: "Tabelas de Frete",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Tabelas de Frete", description: "Lista de todas as tabelas de frete cadastradas, permite editar e criar novos cadastros" }
+                            ]
+                        },
+                        {
+                            name: "Planejamento e expedição",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Visão Geral (em breve)", description: "(...)" },
+                                { name: "Planejamento e expedição", description: "Fluxo que permite a visualização dos pedidos recebidos, montagem de carga, roteirização, contratação e expedição" },
+                                { name: "Fretes Cotratados", description: "Lista de todas as contratações de frete realizadas e seus respectivos documentos emitidos" },
+                                { name: "Manutenção de emissões", description: "(...)" }
+                            ]
+                        },
+                        {
+                            name: "Torre de Controle",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Gestão de entregas", description: "Visão macro da operação como um todo, número de ocorrências, entregas pendentes, veículos em trânsito e etc." },
+                                { name: "Tracking de viagens", description: "Visão micro/detalhada e individual de cada viagem, se já finalizada ou não" },
+                                { name: "Tracking de documentos", description: "Visão micro/detalhada e individual de cada documento em viagem, se já finalizado ou não" }
+                            ]
+                        },
+                        {
+                            name: "Conciliação e auditoria",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Conciliação e auditoria", description: "Ambiente que realiza a conferência entre o valor de frete acordado e o valor de frete informado no respectivo CT-e emitido, validando e evidenciando quaisquer incorfomidade" }
+                            ]
+                        },
+                        {
+                            name: "Pagamentos",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Gestão de pagamentos", description: "CT-e's aprovados paga pagamento e mais o detalhamento de qual viagem o mesmo pertence" },
+                                { name: "Gestão de faturas", description: "Faturas geradas para pagamento" }
+                            ]
+                        },
+                        {
+                            name: "Relatórios (em breve)",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "(Em breve)", description: "(...)" }
+                            ]
+                        },
+                        {
+                            name: "Cadastros",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Filiais", description: "Lista de todas as filiais cadastradas, permite editar e criar novos cadastros" },
+                                { name: "Prestadores de transporte", description: "Lista de todos os prestadores de transporte cadastradas, permite editar e criar novos cadastros" },
+                                { name: "Veículos", description: "Lista de todos os veículos e seus proprietários, permite editar e criar novos cadastros" },
+                                { name: "Motoristas", description: "Lista de todos os motoristas, permite editar e criar novos cadastros" }
+                            ]
+                        },
+                        {
+                            name: "Configurações",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Usuários e permissões", description: "Lista de todos os usuários, permite editar e criar novos cadastros, assim como o permicionamento" },
+                                { name: "Tabelas de frete", description: "Lista de todos os tipos de operação, regiões operacionais, compronentes de frete e tipos de vículo, permite editar e criar novos cadastros" },
+                                { name: "Impostos", description: "Tabela de todos os impostos estaduais, permite editar e criar novos cadastros" },
+                                { name: "Pagamento", description: "-" }
+                            ]
+                        }
+                    ],
+                    lastUpdate: "2026-03-10T19:54:05.710Z"
+                },
+                "NDD EMITE FÁCIL": {
+                    modules: [
+                        {
+                            name: "-",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "-", description: "-" }
+                            ]
+                        }
+                    ],
+                    lastUpdate: "2026-03-10T19:54:05.710Z"
+                },
+                "NDD EMISSOR FÁCIL": {
+                    modules: [
+                        {
+                            name: "-",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "-", description: "-" }
+                            ]
+                        }
+                    ],
+                    lastUpdate: "2026-03-10T19:54:05.710Z"
+                },
+                "NDD FRETE MÍNIMO": {
+                    modules: [
+                        {
+                            name: "-",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "-", description: "Não possui módulos" }
+                            ]
+                        }
+                    ],
+                    lastUpdate: "2026-03-10T19:54:05.710Z"
+                },
+                "NDD SPACE": {
+                    modules: [
+                        {
+                            name: "Resumo Fiscal",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "-", description: "Painel consolidado das informações fiscais processadas no portal com indicadores e status dos documentos fiscais." }
+                            ]
+                        },
+                        {
+                            name: "Documentos",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "-", description: "Área para consulta e gestão de documentos eletrônicos (NF-e, CT-e, MDF-e etc.), permitindo visualizar, filtrar, baixar XML/PDF e acompanhar o status." }
+                            ]
+                        },
+                        {
+                            name: "Financeiro",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Pagamentos", description: "Tela para gestão de contas a pagar vinculadas aos documentos fiscais processados." },
+                                { name: "Recebimentos", description: "Tela para gestão de contas a receber vinculadas aos documentos fiscais, permitindo acompanhar valores e previsões." }
+                            ]
+                        },
+                        {
+                            name: "Configurações",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Licença", description: "Área onde são exibidas e administradas as licenças do sistema, módulos ativos e validade." },
+                                { name: "Responsável Técnico", description: "Cadastro do responsável técnico da empresa para identificação em integrações e processos fiscais." },
+                                { name: "Empresa", description: "Cadastro e configuração das empresas que utilizam o portal incluindo dados cadastrais e parâmetros." },
+                                { name: "Grupo de Empresas", description: "Permite agrupar várias empresas para facilitar gestão e aplicação de regras ou permissões." },
+                                { name: "Parceiro", description: "Cadastro de parceiros relacionados ao ambiente como integradores ou prestadores." },
+                                { name: "Template de Impressão", description: "Configuração dos modelos de impressão utilizados para geração de documentos fiscais." },
+                                { name: "Integração", description: "Configuração das integrações entre o NDD Space e sistemas externos como ERPs." },
+                                { name: "Regras de Integração", description: "Definição das regras que determinam como documentos e dados são enviados ou recebidos nas integrações." },
+                                { name: "Usuário", description: "Cadastro e gerenciamento de usuários que acessam o portal." },
+                                { name: "Grupo de Permissões", description: "Definição de perfis de acesso que determinam quais funcionalidades cada usuário pode utilizar." }
+                            ]
+                        },
+                        {
+                            name: "Suporte",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Rastreio de Documento", description: "Ferramenta para acompanhar o fluxo completo de processamento de um documento dentro do sistema." },
+                                { name: "Auditoria do Usuário", description: "Registro das ações realizadas pelos usuários no sistema para controle e rastreabilidade." },
+                                { name: "Notificações", description: "Área para visualizar e configurar alertas e notificações geradas pelo sistema." }
+                            ]
+                        },
+                        {
+                            name: "Tráfego",
+                            icon: "fas fa-folder",
+                            functionalities: [
+                                { name: "Consolidação total", description: "Relatório consolidado do volume total de documentos processados no sistema." },
+                                { name: "Consilidação por documentos", description: "Relatório consolidado que mostra o volume de tráfego separado por tipo de documento fiscal." },
+                                { name: "Tráfego detalhado", description: "Relatório detalhado com informações completas sobre o tráfego de documentos e processamento." }
+                            ]
+                        }
+                    ],
+                    lastUpdate: "2026-03-10T19:54:05.710Z"
+                }
+            },
+            currentProduct: "NDD SPACE",
+            lastUpdate: "2026-03-16T13:54:10.283Z"
         };
         
         // Módulo atual selecionado
