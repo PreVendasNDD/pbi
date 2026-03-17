@@ -1905,11 +1905,16 @@
             try {
                 const savedTheme = localStorage.getItem(THEME_KEY);
                 const themeToggle = document.getElementById('themeToggle');
-                
+        
                 if (savedTheme === 'dark') {
                     document.body.classList.add('dark-mode');
                     if (themeToggle) themeToggle.checked = true;
                     updateThemeToggleText(true);
+                } else if (savedTheme === null) {
+                    document.body.classList.add('dark-mode');
+                    if (themeToggle) themeToggle.checked = true;
+                    updateThemeToggleText(true);
+                    localStorage.setItem(THEME_KEY, 'dark');
                 } else {
                     document.body.classList.remove('dark-mode');
                     if (themeToggle) themeToggle.checked = false;
