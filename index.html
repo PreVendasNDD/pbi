@@ -995,6 +995,35 @@
                 grid-template-columns: 1fr;
             }
         }
+
+
+	/* Cabeçalhos com botão de toggle */
+	.concept-header, .links-header {
+    	display: flex;
+    	justify-content: space-between;
+    	align-items: center;
+	}
+
+	.toggle-section-btn {
+    	background: var(--light);
+    	border: 1px solid var(--border-color);
+    	border-radius: 40px;
+    	padding: 8px 14px;
+    	font-size: 13px;
+    	font-weight: 500;
+    	cursor: pointer;
+    	display: flex;
+    	align-items: center;
+    	gap: 8px;
+    	transition: all 0.2s ease;
+    	color: var(--text-color);
+	}
+
+	.toggle-section-btn:hover {
+    	background: var(--secondary-light);
+   	 border-color: var(--secondary);
+	}
+	
     </style>
 </head>
 <body class="theme-ndd-cargo">
@@ -1075,19 +1104,22 @@
             </div>
             
             <!-- Seção de Conceito do Produto -->
-            <div class="product-concept" id="productConceptSection" style="display: none;">
-                <h3><i class="fas fa-lightbulb"></i> Conceito do Produto - <span id="conceptProductName">NDD CARGO</span></h3>
-                <div class="product-concept-content" id="productConceptContent">
-                    <!-- Conteúdo será gerado dinamicamente conforme o produto -->
-                </div>
+            <div class="product-concept" id="productConceptSection">
+   		 <div class="concept-header">
+   		     <h3><i class="fas fa-lightbulb"></i> Conceito do Produto - <span id="conceptProductName">NDD CARGO</span></h3>
+     		   <button class="toggle-section-btn" id="toggleConceptBtn"><i class="fas fa-chevron-up"></i> Ocultar</button>
+   		 </div>
+   		 <div class="product-concept-content" id="productConceptContent"></div>
             </div>
             
             <!-- Painel de Links por Produto -->
-            <div class="links-section" id="linksSection" style="display: none;">
-                <h3><i class="fas fa-external-link-alt"></i> Links Úteis - <span id="linksProductName">NDD CARGO</span></h3>
-                <div class="links-grid" id="linksGrid">
-                    <!-- Links serão gerados dinamicamente conforme o produto -->
-                </div>
+            <div class="links-section" id="linksSection">
+    		<div class="links-header">
+   		     <h3><i class="fas fa-external-link-alt"></i> Links Úteis - <span id="linksProductName">NDD CARGO</span></h3>
+    		    <button class="toggle-section-btn" id="toggleLinksBtn"><i class="fas fa-chevron-up"></i> Ocultar</button>
+   		 </div>
+  		  <div class="links-grid" id="linksGrid"></div>
+		</div>
             </div>
             
             <!-- PAINEL PRINCIPAL -->
@@ -2580,6 +2612,83 @@
         
         // Expor função para uso no HTML
         window.selectModule = selectModule;
+
+        // ==================== TOGGLE DAS SEÇÕES ====================
+        let conceptCollapsed = false, linksCollapsed = false;
+        const CONCEPT_KEY = 'ndd_concept_toggle';
+        const LINKS_KEY = 'ndd_links_toggle';
+
+        function loadToggles() {
+            try {
+                const savedConcept = localStorage.getItem(CONCEPT_KEY);
+                const savedLinks = localStorage.getItem(LINKS_KEY);
+                if (savedConcept !== null) conceptCollapsed = savedConcept === 'true';
+                if (savedLinks !== null) linksCollapsed = savedLinks === 'true';
+            } catch(e) {}
+        }
+
+        function saveToggles() {
+            try {
+                localStorage.setItem(CONCEPT_KEY, conceptCollapsed);
+                localStorage.setItem(LINKS_KEY, linksCollapsed);
+            } catch(e) {}
+        }
+
+        function applyToggles() {
+            const conceptContent = document.getElementById('productConceptContent');
+            const conceptBtn = document.getElementById('toggleConceptBtn');
+            if (conceptContent && conceptBtn) {
+                if (conceptCollapsed) {
+                    conceptContent.style.display = 'none';
+                    conceptBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Reexibir';
+                } else {
+                    conceptContent.style.display = 'block';
+                    conceptBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Ocultar';
+                }
+            }
+    
+            const linksGrid = document.getElementById('linksGrid');
+            const linksBtn = document.getElementById('toggleLinksBtn');
+            if (linksGrid && linksBtn) {
+                if (linksCollapsed) {
+                    linksGrid.style.display = 'none';
+                    linksBtn.innerHTML = '<i class="fas fa-chevron-down"></i> Reexibir';
+                } else {
+                    linksGrid.style.display = 'grid';
+                    linksBtn.innerHTML = '<i class="fas fa-chevron-up"></i> Ocultar';
+                }
+            }
+        }
+
+        function setupToggles() {
+            const conceptBtn = document.getElementById('toggleConceptBtn');
+            const linksBtn = document.getElementById('toggleLinksBtn');
+    
+            if (conceptBtn) {
+                conceptBtn.addEventListener('click', () => {
+                    conceptCollapsed = !conceptCollapsed;
+                    saveToggles();
+                    applyToggles();
+                });
+            }
+    
+            if (linksBtn) {
+                linksBtn.addEventListener('click', () => {
+                    linksCollapsed = !linksCollapsed;
+                    saveToggles();
+                    applyToggles();
+                });
+            }
+        }
+
+        // Carregar e aplicar os toggles
+        loadToggles();
+        setupToggles();
+                applyToggles();
+
+
+
+
     </script>
 </body>
 </html>
